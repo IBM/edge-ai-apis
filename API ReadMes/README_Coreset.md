@@ -27,57 +27,289 @@ Coreset API has implemented the following algorithms.
 ## Version 1.0 APIs
 The following are API services offered for version 1.0:
 
-Methods for data/label management:
-- Model and Data Utility creation: Creates the following data utilities for the data management APIs 
-    1. Fasttext model (fasttext file) - used to validate and impute data during assementment
-    2. Cooccurrence matrix (pickle file) - used to impute data based on statistics of the test set
-    3. data/column mapping (pickle file) - used to validate data is correctly remediated in the appropriate column
-Creates a fastext model to learn the relationship between column values in the data set to validate or impute data.
-- Data Validation: Determines if data input is out of vocabulary (i.e. not present in the data set)
-- Data Imputation: Offers remediation to impute null column values
-- Data Noise: Identifies data inputted in the incorrect column
+Methods for Coreset API.
+All the REST APIs are using an HTTP post method to invoke the backend Coreset service. The payload of the post method has a multipart/form-data format in which form is used to pass arguments and file is used to pass data. 
 
+In the following, a sample is given for each method in python syntax. 
+All the calls have a format of res = requests.post(url='http://hostname:port/method', data=meta_data, files=file_data) where meta_data defines the arguments passed to the algorithm and file_data specifies the dataset used for processing. The return of each call carries a status code and the processing result that may be in a pickled format. 
+
+The status code 200 indicates success, and the status code 400 denotes an error condition.
+
+
+1.	wav-to-mp3
+
+Description:  
+Converts a wav audio clip to an mp3 audio clip.
+Arguments: 
+rate: a string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed.
+	          	file: specifies the wav audio clip to be compressed.
+Return: 
+200: the resulting mp3 clip.
+400: an error message if error occurred at runtime.
+Example:
+meta_data = {'rate': '192k'}
+file_data = {'file': wav_data}
+res = requests.post(url="http://192.168.1.153:5000/wav_to_mp3", data=meta_data, files=file_data) 
+
+
+
+
+2.	mp3-to-wav
+
+ 	Description:
+Converts an mp3 audio clip to a wav audio clip.
+ Arguments:
+file: specifies the mp3 audio clip to be decompressed.
+Return:
+	200: the resulting wav clip
+400: an error message if error occurred at runtime.
+Example:
+file_data = {'file': mp3_data}
+res = requests.post(url="http://192.168.1.153:5000/mp3_to_wav", files=file_data)
+
+
+3.	jpeg_compress
+
+Description:
+Compress an image to JPEG image
+Arguments:
+		quality: an integer specifying the quality of the compressed JPEG image. 
+It ranges from 0 to 100.
+		file: specifies the image to be compressed
+Return:
+		200: the resulting JPEG image
+400: an error message if error occurred at runtime.
+	Example:
+meta_data = {'quality': 10}
+file_data = {'file': image_data}
+res = requests.post(url='http://192.168.1.153:5000/jpeg_compress', data=meta_data, files=file_data)
+
+
+4.	jpeg_decompress
+
+Description:
+Decompress the specified JPEG image to a bit map image.
+Arguments:
+		file: specifies the JPEG image to be decompressed.
+Return:
+	200: the resulting bit map image
+400: an error message if error occurred at runtime.
+Example:
+file_data = {'file': jpg_image}
+res = requests.post(url='http://192.168.1.153:5000/jpeg_decompress', files=file_data)
+
+5.	compress_nparray
+
+Description:
+Losslessly compress the specified numpy array using the default algorithm.
+Arguments:
+		file: the specified numpy array to be compressed. It is in a pickled format.
+Return:
+	200: the compressed numpy array.
+400: an error message if error occurred at runtime.
+Example:
+file_data = {'file': memfile}
+res = requests.post(url="http://192.168.1.153:5000/compress_nparray", files=file_data)
+
+
+6.	decompress_nparray
+Description:
+Reconstruct a compressed numpy array.
+Arguments:
+file: specifies the numpy array to be reconstructed.
+Return:
+		200: the reconstructed numpy array. It is in a pickled format.
+400: an error message if error occurred at runtime.
+           Example:
+	file_data = {'file': memfile}
+  res = requests.post(url="http://192.168.1.153:5000/decompress_nparray", files=file_data)
+
+
+
+7.	compress_nparray_zlib
+
+Description:
+		Losslessly compress a numpy array using the zlib algorithm.
+Arguments:
+		file: the specified numpy array to be compressed. It is in a pickled format.
+Return:
+		200: the compressed numpy array.
+400: an error message if error occurred at runtime.
+Example:
+file_data = {'file': memfile}
+    	res = requests.post(url="http://192.168.1.153:5000/compress_nparray_zlib", files=file_data)
+
+
+
+
+8.	decompress_nparray_zlib
+Description:
+Reconstruct the specified numpy array using the zlib algorithm.
+Arguments:
+file: specifies the numpy array to be reconstructed.
+Return:
+		200: the reconstructed numpy array. It is in a pickled format.
+400: an error message if error occurred at runtime.
+	Example:
+		file_data = {'file': memfile}
+res = requests.post(url="http://192.168.1.153:5000/decompress_nparray_zlib", files=file_data)
+
+
+
+9.	compress_nparray_bz2
+
+Description:
+		Losslessly compress a numpy array using the bz2 algorithm.
+Arguments:
+		file: the specified numpy array to be compressed using the bz2 algorithm.
+Return:
+		200: the compressed numpy array.
+400: an error message if error occurred at runtime.
+Example:
+file_data = {'file': memfile}
+res = requests.post(url="http://192.168.1.153:5000/compress_nparray_bz2", files=file_data)
+
+
+10.	decompress_nparray_bz2
+
+Description:
+Reconstruct a bz2-compressed numpy array.
+Arguments:
+file: specifies the numpy array to be reconstructed.
+Return:
+		200: the reconstructed numpy array.
+400: an error message if error occurred at runtime.
+	Example:
+		file_data = {'file': memfile}
+res = requests.post(url="http://192.168.1.153:5000/decompress_nparray_bz2", files=file_data)
+
+
+
+11.	compress_obj
+
+Description:
+		Losslessly compress a python object using the default compression algorithm.
+Arguments:
+		file: the specified python object to be compressed. It is in a pickled format.
+Return:
+	200: the compressed python object.
+400: an error message if error occurred at runtime.
+Example:
+file_data = {'file': memfile}
+res = requests.post(url="http://192.168.1.153:5000/compress_nparray_obj", files=file_data)
+
+12.	decompress_obj
+
+Description:
+Reconstruct a compressed python object.
+Arguments:
+file: specifies the python object to be reconstructed.
+Return:
+		200: the reconstructed python object.
+400: an error message if error occurred at runtime.
+	Example:
+		file_data = {'file': memfile}
+res = requests.post(url="http://192.168.1.153:5000/decompress_obj", files=file_data)
+
+
+
+13.	clustering_compress_dataset
+
+Description:
+		Compress dataset using the clustering approach.
+Arguments:
+		num_cluster: an integer specifying the number of clusters to be produced.
+		file: specifies the dataset to be compressed.
+Return:
+		200: the compressed dataset in a pickled format.
+400: an error message if error occurred at runtime.
+Example:
+		meta_data = {'num_cluster': n_cluster}
+file_data = {'file': memfile}
+res = requests.post(url="http://192.168.1.153:5000/clustering_compress_dataset", data=meta_data, files=file_data)
+
+
+
+14.	clustering_decompress_dataset
+
+Description:
+Reconstruct a compressed dataset.
+Arguments:
+num_points_in_cluster: an integer specifying the number of samples in each cluster.
+file: specifies the dataset to be reconstructed.
+Return:
+		200: the reconstructed dataset.
+400: an error message if error occurred at runtime.
+           Example:
+meta_data = {'num_points_in_cluster': n_points_in_cluster}
+file_data = {'file': memfile}
+res = requests.post(url='http://192.168.1.153:5000/clustering_decompress_dataset', data=meta_data, files=file_data)
+
+
+15.	extract_mfcc
+
+Description:
+		Extract MFCCs (Mel-Frequency Cepstral Coefficients) from sounds.
+Arguments:
+		path: a string specifying the path to sound dataset.
+file: specifies the sound dataset from which to extract MFCCs and it is in a pickled      format.
+Return:
+		200: the extracted labels and MFCCs in a pickled form.
+400: an error message if error occurred at runtime.
+Example:
+		meta_data = {'path': './examples/audio_data/dataset'}
+file_data = {'file': memfile}
+res = requests.post(url='http://192.168.1.153:5000/extract_mfcc', data=meta_data, files=file_data)
+
+
+
+
+
+
+
+
+
+
+
+16.	ae_extract_feature
+
+Description:
+	Extract features from a dataset using autoencoder.
+Arguments:
+	input_dim: an integer specifying the dimension of input dataset.
+	output_dim: an integer specifying the dimension of the extracted data.
+	num_layers: an integer specifying the number of layers of neural network.
+	epochs: an integer specifying the number of iterations.
+	file_train: specifies the training dataset.
+	file_test: specifies the dataset from which to extract features.
+Return:
+	200: the extracted features which are in a pickled format.
+400: an error message if error occurred at runtime.
+Example:
+    	meta_data = {'input_dim': 784, 'output_dim': 16, 'num_layers': 7, 'epochs': 10}
+file_data = {'file_train': memfile_train, 'file_test': memfile_test}
+res = requests.post(url='URL/ae_extract_feature',      data=meta_data, files=file_data)
+
+
+
+17.	pca_analysis
+
+Description:
+		Extract principal components from a dataset using principal component analysis.
+Arguments:
+		percentage: a float number specifying the number of principal components.
+		file_train: specifies the training dataset used to train the model.
+		file_test specifies the dataset from which to extract principal components.
+Return:
+	200: the extracted principal components in a pickled form.
+ 	400: an error message if error occurred at runtime.
+Example:
+    	meta_data = {'percentage': 0.95}
+    	file_data = {'file_train': memfile_train, 'file_test': memfile_test}
+res = requests.post(url='URL', data=meta_data, files=file_data)
+		
 
 ## Interpreting the Output
  
-The output JSON can be got from the response field. The output in the response field is formatted as JSON with a defined schema. To interpret the output JSON, there are two main fields as metadata field and the results field. The metadata field stores metadata information about the job submitted as dataset name, name of the metric, run time information and the label column, which is provided by the user.
+blah blah here
 
-The results field contains the actual results. One can start interpreting the results field by looking at the score, which provides a value of 0-1. A score of 1 indicates a problem free dataset. The explanation and details filed help you understand why the quality is low, by pointing to regions of data which are problematic. The details field helps you understand how to access the problematic data points. Below is a schematic that gives a one liner for each field in the JSON.
-
-#### Data Quality JSON
-```
-{
-    "results": { // Consist results related details for data quality metric.
-    
-        "title": "", // Title of performed data quality metric.
-        
-        "score": 1, // Data quality score for given metric as a real number between 0 and 1.\
-                    Score 1 indicate for good quality and 0 indicate for bad quality data.
-                
-        "explanation": "", // Simple explanation on why data quality score is high or low.  
-        
-        "details": {} // All the details on data quality metric to access the problematic data samples
-
-    },
-    "metadata": { // Consist metadata related information to data quality metric.
-        
-        "dataset_details": [ // Dataset details 
-            {
-                "name": "",
-                "type": "",
-                "path": ""
-            }
-        ],
-        "method_details": { // Data quality metric config details 
-            "name": "",
-            "type": "",
-            "definition": ""
-        },
-        "starting_timestamp": "",
-        "runtime": ""
-        
-    }
-}
-```
-In order to use the APIs effectively, we provide a step-by-step guide on using the Federated DataOps API to assess and remediate data quality issues with a text tabular data set. 
-The tutorial is a complete Python notebook to help you get started using the API, which you can run in your preferred IDE.
