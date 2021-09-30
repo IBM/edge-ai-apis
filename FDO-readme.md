@@ -21,7 +21,7 @@ Creates a fastext model to learn the relationship between column values in the d
 - Data Noise: Identifies data inputted in the incorrect column
 ​
 ​
-##Interpreting the Output
+## Interpreting the Output
  
 The output JSON can be got from the response field. The output in the response field is formatted as JSON with a defined schema. To interpret the output JSON, there are two main fields as metadata field and the results field. The metadata field stores metadata information about the job submitted as dataset name, name of the metric, run time information and the label column, which is provided by the user.
 ​
