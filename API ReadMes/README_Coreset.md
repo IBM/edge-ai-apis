@@ -28,10 +28,12 @@ Coreset API has implemented the following algorithms.
 The following are API services offered for version 1.0:
 
 Methods for Coreset API.
-All the REST APIs are using an HTTP post method to invoke the backend Coreset service. The payload of the post method has a multipart/form-data format in which form is used to pass arguments and file is used to pass data. 
+
+REST APIs are using an HTTP post method to invoke the backend Coreset service. The payload of the post method has a multipart/form-data format in which form is used to pass arguments and file is used to pass data. 
 
 In the following, a sample is given for each method in python syntax. 
-All the calls have a format of res = requests.post(url='http://hostname:port/method', data=meta_data, files=file_data) where meta_data defines the arguments passed to the algorithm and file_data specifies the dataset used for processing. The return of each call carries a status code and the processing result that may be in a pickled format. 
+
+All the calls have a format of res = requests.post(url='http://hostname:port/method', data=meta_data, files=file_data) where meta_data defines the arguments passed to the algorithm and file_data specifies the dataset used for processing. The return of each call carries a status code and the processing result in a pickled format. 
 
 The status code 200 indicates success, and the status code 400 denotes an error condition.
 
@@ -50,8 +52,6 @@ Example:
 meta_data = {'rate': '192k'}
 file_data = {'file': wav_data}
 res = requests.post(url="URL:port/wav_to_mp3", data=meta_data, files=file_data) 
-
-
 
 
 2.	mp3-to-wav
