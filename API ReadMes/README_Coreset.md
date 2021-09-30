@@ -15,12 +15,12 @@ Coreset API has implemented the following algorithms.
 
 4.	Advanced algorithms
 
-a.	Principle component analysis which computes the principal components and use them to perform a change of basis on the data
+    a.	Principle component analysis which computes the principal components and use them to perform a change of basis on the data
 
-b.	Clustering-based approach which characterizes data with centroids and sample distributions
+    b.	Clustering-based approach which characterizes data with centroids and sample distributions
 
-c.	Autoencoder which is an artificial neural network that learns the distribution inherent in the data and recreates statistically similar data at the core location
-d.	MFCC extraction from sound data which can be used for audio analysis.
+    c.	Autoencoder which is an artificial neural network that learns the distribution inherent in the data and recreates statistically similar data at the core location
+    d.	MFCC extraction from sound data which can be used for audio analysis.
 
 
 
