@@ -49,7 +49,7 @@ Return:
 Example:
 meta_data = {'rate': '192k'}
 file_data = {'file': wav_data}
-res = requests.post(url="http://192.168.1.153:5000/wav_to_mp3", data=meta_data, files=file_data) 
+res = requests.post(url="URL:port/wav_to_mp3", data=meta_data, files=file_data) 
 
 
 
@@ -65,7 +65,7 @@ Return:
 400: an error message if error occurred at runtime.
 Example:
 file_data = {'file': mp3_data}
-res = requests.post(url="http://192.168.1.153:5000/mp3_to_wav", files=file_data)
+res = requests.post(url="URL:port/mp3_to_wav", files=file_data)
 
 
 3.	jpeg_compress
@@ -82,7 +82,7 @@ Return:
 	Example:
 meta_data = {'quality': 10}
 file_data = {'file': image_data}
-res = requests.post(url='http://192.168.1.153:5000/jpeg_compress', data=meta_data, files=file_data)
+res = requests.post(url='URL:port0/jpeg_compress', data=meta_data, files=file_data)
 
 
 4.	jpeg_decompress
@@ -96,7 +96,7 @@ Return:
 400: an error message if error occurred at runtime.
 Example:
 file_data = {'file': jpg_image}
-res = requests.post(url='http://192.168.1.153:5000/jpeg_decompress', files=file_data)
+res = requests.post(url='URL:port/jpeg_decompress', files=file_data)
 
 5.	compress_nparray
 
@@ -109,7 +109,7 @@ Return:
 400: an error message if error occurred at runtime.
 Example:
 file_data = {'file': memfile}
-res = requests.post(url="http://192.168.1.153:5000/compress_nparray", files=file_data)
+res = requests.post(url="URL:port/compress_nparray", files=file_data)
 
 
 6.	decompress_nparray
@@ -122,7 +122,7 @@ Return:
 400: an error message if error occurred at runtime.
            Example:
 	file_data = {'file': memfile}
-  res = requests.post(url="http://192.168.1.153:5000/decompress_nparray", files=file_data)
+  res = requests.post(url="URL:port/decompress_nparray", files=file_data)
 
 
 
@@ -137,7 +137,7 @@ Return:
 400: an error message if error occurred at runtime.
 Example:
 file_data = {'file': memfile}
-    	res = requests.post(url="http://192.168.1.153:5000/compress_nparray_zlib", files=file_data)
+    	res = requests.post(url="URL:port/compress_nparray_zlib", files=file_data)
 
 
 
@@ -152,7 +152,7 @@ Return:
 400: an error message if error occurred at runtime.
 	Example:
 		file_data = {'file': memfile}
-res = requests.post(url="http://192.168.1.153:5000/decompress_nparray_zlib", files=file_data)
+res = requests.post(url="URL:port/decompress_nparray_zlib", files=file_data)
 
 
 
@@ -167,7 +167,7 @@ Return:
 400: an error message if error occurred at runtime.
 Example:
 file_data = {'file': memfile}
-res = requests.post(url="http://192.168.1.153:5000/compress_nparray_bz2", files=file_data)
+res = requests.post(url="URL:port/compress_nparray_bz2", files=file_data)
 
 
 10.	decompress_nparray_bz2
@@ -181,7 +181,7 @@ Return:
 400: an error message if error occurred at runtime.
 	Example:
 		file_data = {'file': memfile}
-res = requests.post(url="http://192.168.1.153:5000/decompress_nparray_bz2", files=file_data)
+res = requests.post(url="URL:port/decompress_nparray_bz2", files=file_data)
 
 
 
@@ -196,7 +196,7 @@ Return:
 400: an error message if error occurred at runtime.
 Example:
 file_data = {'file': memfile}
-res = requests.post(url="http://192.168.1.153:5000/compress_nparray_obj", files=file_data)
+res = requests.post(url="/compress_nparray_obj", files=file_data)
 
 12.	decompress_obj
 
@@ -209,7 +209,7 @@ Return:
 400: an error message if error occurred at runtime.
 	Example:
 		file_data = {'file': memfile}
-res = requests.post(url="http://192.168.1.153:5000/decompress_obj", files=file_data)
+res = requests.post(url="URL:port/decompress_obj", files=file_data)
 
 
 
@@ -226,7 +226,7 @@ Return:
 Example:
 		meta_data = {'num_cluster': n_cluster}
 file_data = {'file': memfile}
-res = requests.post(url="http://192.168.1.153:5000/clustering_compress_dataset", data=meta_data, files=file_data)
+res = requests.post(url="URL:port/clustering_compress_dataset", data=meta_data, files=file_data)
 
 
 
@@ -243,7 +243,7 @@ Return:
            Example:
 meta_data = {'num_points_in_cluster': n_points_in_cluster}
 file_data = {'file': memfile}
-res = requests.post(url='http://192.168.1.153:5000/clustering_decompress_dataset', data=meta_data, files=file_data)
+res = requests.post(url='URL:port/clustering_decompress_dataset', data=meta_data, files=file_data)
 
 
 15.	extract_mfcc
@@ -259,7 +259,7 @@ Return:
 Example:
 		meta_data = {'path': './examples/audio_data/dataset'}
 file_data = {'file': memfile}
-res = requests.post(url='http://192.168.1.153:5000/extract_mfcc', data=meta_data, files=file_data)
+res = requests.post(url='URL:port/extract_mfcc', data=meta_data, files=file_data)
 
 
 
