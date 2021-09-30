@@ -1,5 +1,5 @@
 
-# Federated DataOps v1.0 [![Build Status](https://travis.ibm.com/data-readiness-for-ai/dart.svg?token=FteDhaP1ixcbGERzJ2he&branch=master)](https://travis.ibm.com/data-readiness-for-ai/dart)
+# Federated DataOps v1.0 Overview [![Build Status](https://travis.ibm.com/data-readiness-for-ai/dart.svg?token=FteDhaP1ixcbGERzJ2he&branch=master)](https://travis.ibm.com/data-readiness-for-ai/dart)
 `Repo for all version 1.0 APIs for Federate DataOps`
 
 Federated DataOps is a library extending the data assessment and remediation functions found in the Data Assessment and Readiness Toolkit (DART) with data and label remediation for tabular data sets with text data. Each function provides a quality score and a an explanation towards remediation
