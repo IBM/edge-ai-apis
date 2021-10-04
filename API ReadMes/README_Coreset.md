@@ -56,13 +56,13 @@ file_data = {'file': wav_data}
 res = requests.post(url="URL:port/wav_to_mp3", data=meta_data, files=file_data) 
 
 
-2.	mp3-to-wav
+### 2.	mp3-to-wav
 
- 	Description:
+#### Description:
 Converts an mp3 audio clip to a wav audio clip.
  Arguments:
 file: specifies the mp3 audio clip to be decompressed.
-Return:
+#### Return:
 	200: the resulting wav clip
 400: an error message if error occurred at runtime.
 Example:
@@ -70,9 +70,9 @@ file_data = {'file': mp3_data}
 res = requests.post(url="URL:port/mp3_to_wav", files=file_data)
 
 
-3.	jpeg_compress
+### 3.	jpeg_compress
 
-Description:
+#### Description:
 Compress an image to JPEG image
 Arguments:
 		quality: an integer specifying the quality of the compressed JPEG image. 
@@ -87,13 +87,13 @@ file_data = {'file': image_data}
 res = requests.post(url='URL:port0/jpeg_compress', data=meta_data, files=file_data)
 
 
-4.	jpeg_decompress
+### 4.	jpeg_decompress
 
-Description:
+#### Description:
 Decompress the specified JPEG image to a bit map image.
 Arguments:
 		file: specifies the JPEG image to be decompressed.
-Return:
+#### Return:
 	200: the resulting bit map image
 400: an error message if error occurred at runtime.
 Example:
