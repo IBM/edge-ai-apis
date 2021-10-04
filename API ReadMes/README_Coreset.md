@@ -39,22 +39,22 @@ The status code 200 indicates success, and the status code 400 denotes an error 
 
 
 ### 1.	wav-to-mp3
-
 #### Description:  
 Converts a wav audio clip to an mp3 audio clip.
 Arguments: 
-rate: a string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed.
-	          	file: specifies the wav audio clip to be compressed.
-			
+rate: a string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed
+file: specifies the wav audio clip to be compressed.	
 #### Return: 
+```
 200: the resulting mp3 clip.
 400: an error message if error occurred at runtime.
-
-Example:
+```
+#### Example:
+```
 meta_data = {'rate': '192k'}
 file_data = {'file': wav_data}
 res = requests.post(url="URL:port/wav_to_mp3", data=meta_data, files=file_data) 
-
+```
 
 ### 2.	mp3-to-wav
 
