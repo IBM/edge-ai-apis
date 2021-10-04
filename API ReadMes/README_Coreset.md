@@ -43,19 +43,19 @@ The status code 200 indicates success, and the status code 400 denotes an error 
 Converts a wav audio clip to an mp3 audio clip.
 #### Arguments: 
 ```
-rate: a string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed
-file: specifies the wav audio clip to be compressed.	
+rate: A string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed
+file: Specifies the wav audio clip to be compressed.	
 ```	
 #### Return: 
 ```
-200: the resulting mp3 clip.
-400: an error message if error occurred at runtime.
+200: The resulting mp3 clip.
+400: An error message if error occurred at runtime.
 ```
 #### Example:
 ```
 meta_data = {'rate': '192k'}
 file_data = {'file': wav_data}
-res = requests.post(url="URL:port/wav_to_mp3", data=meta_data, files=file_data) 
+res = requests.post(url="URL/wav_to_mp3", data=meta_data, files=file_data) 
 ```
 
 ### 2.	mp3-to-wav
@@ -63,12 +63,12 @@ res = requests.post(url="URL:port/wav_to_mp3", data=meta_data, files=file_data)
 Converts an mp3 audio clip to a wav audio clip.
 #### Arguments:
 ```
-file: specifies the mp3 audio clip to be decompressed.
+file: Specifies the mp3 audio clip to be decompressed.
 ```
 #### Return:
 ```
-200: the resulting wav clip
-400: an error message if error occurred at runtime.
+200: The resulting wav clip.
+400: An error message if error occurred at runtime.
 ```
 #### Example:
 ```
@@ -81,13 +81,13 @@ res = requests.post(url="URL:port/mp3_to_wav", files=file_data)
 Compress an image to JPEG image
 #### Arguments:
 ```
-quality: an integer specifying the quality of the compressed JPEG image ranging from 0 to 100.
-file: specifies the image to be compressed
+quality: An integer specifying the quality of the compressed JPEG image ranging from 0 to 100.
+file: Specifies the image to be compressed
 ```
 #### Return:
 ```
-200: the resulting JPEG image
-400: an error message if error occurred at runtime.
+200: The resulting JPEG image.
+400: An error message if error occurred at runtime.
 ```
 #### Example:
 ```
