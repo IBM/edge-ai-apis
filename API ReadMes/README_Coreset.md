@@ -57,103 +57,108 @@ res = requests.post(url="URL:port/wav_to_mp3", data=meta_data, files=file_data)
 ```
 
 ### 2.	mp3-to-wav
-
 #### Description:
 Converts an mp3 audio clip to a wav audio clip.
- Arguments:
+Arguments:
 file: specifies the mp3 audio clip to be decompressed.
 #### Return:
-	200: the resulting wav clip
+```
+200: the resulting wav clip
 400: an error message if error occurred at runtime.
-Example:
+```
+#### Example:
+```
 file_data = {'file': mp3_data}
 res = requests.post(url="URL:port/mp3_to_wav", files=file_data)
-
+```
 
 ### 3.	jpeg_compress
-
 #### Description:
 Compress an image to JPEG image
 Arguments:
-		quality: an integer specifying the quality of the compressed JPEG image. 
+quality: an integer specifying the quality of the compressed JPEG image. 
 It ranges from 0 to 100.
-		file: specifies the image to be compressed
-Return:
-		200: the resulting JPEG image
+file: specifies the image to be compressed
+#### Return:
+```
+200: the resulting JPEG image
 400: an error message if error occurred at runtime.
-	Example:
+```
+#### Example:
+```
 meta_data = {'quality': 10}
 file_data = {'file': image_data}
 res = requests.post(url='URL:port0/jpeg_compress', data=meta_data, files=file_data)
-
+```
 
 ### 4.	jpeg_decompress
-
 #### Description:
 Decompress the specified JPEG image to a bit map image.
 Arguments:
-		file: specifies the JPEG image to be decompressed.
+file: specifies the JPEG image to be decompressed.
 #### Return:
-	200: the resulting bit map image
+```
+200: the resulting bit map image
 400: an error message if error occurred at runtime.
-Example:
+```
+#### Example:
 file_data = {'file': jpg_image}
 res = requests.post(url='URL:port/jpeg_decompress', files=file_data)
 
-5.	compress_nparray
-
-Description:
+### 5.	compress_nparray
+#### Description:
 Losslessly compress the specified numpy array using the default algorithm.
 Arguments:
-		file: the specified numpy array to be compressed. It is in a pickled format.
-Return:
-	200: the compressed numpy array.
+file: the specified numpy array to be compressed. It is in a pickled format.
+#### Return:
+```
+200: the compressed numpy array.
 400: an error message if error occurred at runtime.
-Example:
+```
+#### Example:
 file_data = {'file': memfile}
 res = requests.post(url="URL:port/compress_nparray", files=file_data)
 
-
-6.	decompress_nparray
-Description:
+### 6.	decompress_nparray
+#### Description:
 Reconstruct a compressed numpy array.
 Arguments:
 file: specifies the numpy array to be reconstructed.
-Return:
-		200: the reconstructed numpy array. It is in a pickled format.
+#### Return:
+```
+200: the reconstructed numpy array. It is in a pickled format.
 400: an error message if error occurred at runtime.
-           Example:
-	file_data = {'file': memfile}
-  res = requests.post(url="URL:port/decompress_nparray", files=file_data)
-
-
-
-7.	compress_nparray_zlib
-
-Description:
-		Losslessly compress a numpy array using the zlib algorithm.
-Arguments:
-		file: the specified numpy array to be compressed. It is in a pickled format.
-Return:
-		200: the compressed numpy array.
-400: an error message if error occurred at runtime.
-Example:
+```
+#### Example:
 file_data = {'file': memfile}
-    	res = requests.post(url="URL:port/compress_nparray_zlib", files=file_data)
+res = requests.post(url="URL:port/decompress_nparray", files=file_data)
 
+### 7.	compress_nparray_zlib
+#### Description:
+Losslessly compress a numpy array using the zlib algorithm.
+Arguments:
+file: the specified numpy array to be compressed. It is in a pickled format.
+#### Return:
+```
+200: the compressed numpy array.
+400: an error message if error occurred at runtime.
+```
+#### Example:
+file_data = {'file': memfile}
+res = requests.post(url="URL:port/compress_nparray_zlib", files=file_data)
 
-
-
-8.	decompress_nparray_zlib
-Description:
+### 8.	decompress_nparray_zlib
+#### Description:
 Reconstruct the specified numpy array using the zlib algorithm.
 Arguments:
 file: specifies the numpy array to be reconstructed.
-Return:
-		200: the reconstructed numpy array. It is in a pickled format.
+#### Return:
+```
+200: the reconstructed numpy array. It is in a pickled format.
 400: an error message if error occurred at runtime.
-	Example:
-		file_data = {'file': memfile}
+```
+#### Example:
+file_data = {'file': memfile}
 res = requests.post(url="URL:port/decompress_nparray_zlib", files=file_data)
 
 
