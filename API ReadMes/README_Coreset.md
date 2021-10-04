@@ -82,7 +82,7 @@ Compress an image to JPEG image
 #### Arguments:
 ```
 quality: An integer specifying the quality of the compressed JPEG image ranging from 0 to 100.
-file: Specifies the image to be compressed
+file: Specifies the image to be compressed.
 ```
 #### Return:
 ```
@@ -93,7 +93,7 @@ file: Specifies the image to be compressed
 ```
 meta_data = {'quality': 10}
 file_data = {'file': image_data}
-res = requests.post(url='URL:port0/jpeg_compress', data=meta_data, files=file_data)
+res = requests.post(url='URL/jpeg_compress', data=meta_data, files=file_data)
 ```
 
 ### 4.	jpeg_decompress
@@ -101,11 +101,11 @@ res = requests.post(url='URL:port0/jpeg_compress', data=meta_data, files=file_da
 Decompress the specified JPEG image to a bit map image.
 #### Arguments:
 ```
-file: specifies the JPEG image to be decompressed.
+file: Specifies the JPEG image to be decompressed.
 ```
 #### Return:
 ```
-200: the resulting bit map image
+200: The resulting bit map image.
 400: an error message if error occurred at runtime.
 ```
 #### Example:
