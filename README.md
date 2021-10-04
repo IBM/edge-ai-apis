@@ -10,7 +10,11 @@ The Edge AI APIs are early access offering from IBM Research to enable AI at the
 ## Get Trial Subscription and how to get the API keys: 
 LINK 
 
-GIT Hub repository for Edge AI APIs on how to get started and interpreting the results including sample code and Jupyter Notebooks.
+
+
+
+
+#### GIT Hub repository for Edge AI APIs on how to get started and interpreting the results including sample code and Jupyter Notebooks.
 
 
 IBM Research, Edge AI Team.
