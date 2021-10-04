@@ -42,8 +42,8 @@ The status code 200 indicates success, and the status code 400 denotes an error 
 #### Description:  
 Converts a wav audio clip to an mp3 audio clip.
 Arguments: 
-rate: a string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed
-file: specifies the wav audio clip to be compressed.	
+	rate: a string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed
+	file: specifies the wav audio clip to be compressed.	
 #### Return: 
 ```
 200: the resulting mp3 clip.
