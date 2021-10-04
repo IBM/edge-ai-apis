@@ -23,8 +23,8 @@ Now, let’s look at some common use case patterns we have come across.
 
 Starting at the top of the Edge AI usage patterns, as shown in the following figure, companies want to collect the data from the edge and analyze it in the cloud with abundant compute resources as compared to the edge. AI models can be trained and deployed in the cloud for inference.
 
- 
-Figure 1: Edge AI Usage Patterns
+![alt text](https://github.ibm.com/wendych/IBM-Research-NGS/blob/master/Images/EdgeAI_Usage_Patterns.png)
+ Figure 1: Edge AI Usage Patterns
 
 In this case, IBM research focuses on technologies for enabling efficient collection of data. However, not all data is valuable. Therefore, how do we decide what data to collect? Depending on what question the data is helping to answer, we might be able to sub-sample the data or preprocess it to extract features instead of transmitting the raw data.
 
