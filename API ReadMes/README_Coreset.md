@@ -106,7 +106,7 @@ file: Specifies the JPEG image to be decompressed.
 #### Return:
 ```
 200: The resulting bit map image.
-400: an error message if error occurred at runtime.
+400: An error message if error occurred at runtime.
 ```
 #### Example:
 ```
@@ -119,17 +119,17 @@ res = requests.post(url='URL:port/jpeg_decompress', files=file_data)
 Losslessly compress the specified numpy array using the default algorithm.
 #### Arguments:
 ```
-file: the specified numpy array to be compressed. It is in a pickled format.
+file: The specified numpy array to be compressed. It is in a pickled format.
 ```
 #### Return:
 ```
-200: the compressed numpy array.
-400: an error message if error occurred at runtime.
+200: The compressed numpy array.
+400: An error message if error occurred at runtime.
 ```
 #### Example:
 ```
 file_data = {'file': memfile}
-res = requests.post(url="URL:port/compress_nparray", files=file_data)
+res = requests.post(url="URL/compress_nparray", files=file_data)
 ```
 
 ### 6.	decompress_nparray
@@ -137,7 +137,7 @@ res = requests.post(url="URL:port/compress_nparray", files=file_data)
 Reconstruct a compressed numpy array.
 #### Arguments:
 ```
-file: specifies the numpy array to be reconstructed.
+file: Specifies the numpy array to be reconstructed.
 ```
 #### Return:
 ```
@@ -155,7 +155,7 @@ res = requests.post(url="URL:port/decompress_nparray", files=file_data)
 Losslessly compress a numpy array using the zlib algorithm.
 #### Arguments:
 ```
-file: the specified numpy array to be compressed. It is in a pickled format.
+file: The specified numpy array to be compressed. It is in a pickled format.
 ```
 #### Return:
 ```
@@ -165,7 +165,7 @@ file: the specified numpy array to be compressed. It is in a pickled format.
 #### Example:
 ```
 file_data = {'file': memfile}
-res = requests.post(url="URL:port/compress_nparray_zlib", files=file_data)
+res = requests.post(url="URL/compress_nparray_zlib", files=file_data)
 ```
 
 ### 8.	decompress_nparray_zlib
