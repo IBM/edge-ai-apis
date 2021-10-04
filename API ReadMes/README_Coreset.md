@@ -102,8 +102,10 @@ file: specifies the JPEG image to be decompressed.
 400: an error message if error occurred at runtime.
 ```
 #### Example:
+```
 file_data = {'file': jpg_image}
 res = requests.post(url='URL:port/jpeg_decompress', files=file_data)
+```
 
 ### 5.	compress_nparray
 #### Description:
@@ -116,8 +118,10 @@ file: the specified numpy array to be compressed. It is in a pickled format.
 400: an error message if error occurred at runtime.
 ```
 #### Example:
+```
 file_data = {'file': memfile}
 res = requests.post(url="URL:port/compress_nparray", files=file_data)
+```
 
 ### 6.	decompress_nparray
 #### Description:
@@ -130,8 +134,10 @@ file: specifies the numpy array to be reconstructed.
 400: an error message if error occurred at runtime.
 ```
 #### Example:
+```
 file_data = {'file': memfile}
 res = requests.post(url="URL:port/decompress_nparray", files=file_data)
+```
 
 ### 7.	compress_nparray_zlib
 #### Description:
@@ -144,8 +150,10 @@ file: the specified numpy array to be compressed. It is in a pickled format.
 400: an error message if error occurred at runtime.
 ```
 #### Example:
+```
 file_data = {'file': memfile}
 res = requests.post(url="URL:port/compress_nparray_zlib", files=file_data)
+```
 
 ### 8.	decompress_nparray_zlib
 #### Description:
@@ -158,130 +166,132 @@ file: specifies the numpy array to be reconstructed.
 400: an error message if error occurred at runtime.
 ```
 #### Example:
+```
 file_data = {'file': memfile}
 res = requests.post(url="URL:port/decompress_nparray_zlib", files=file_data)
+```
 
-
-
-9.	compress_nparray_bz2
-
-Description:
-		Losslessly compress a numpy array using the bz2 algorithm.
+### 9.	compress_nparray_bz2
+#### Description:
+Losslessly compress a numpy array using the bz2 algorithm.
 Arguments:
-		file: the specified numpy array to be compressed using the bz2 algorithm.
-Return:
-		200: the compressed numpy array.
+file: the specified numpy array to be compressed using the bz2 algorithm.
+#### Return:
+```
+200: the compressed numpy array.
 400: an error message if error occurred at runtime.
-Example:
+```
+#### Example:
+```
 file_data = {'file': memfile}
 res = requests.post(url="URL:port/compress_nparray_bz2", files=file_data)
+```
 
-
-10.	decompress_nparray_bz2
-
-Description:
+### 10.	decompress_nparray_bz2
+#### Description:
 Reconstruct a bz2-compressed numpy array.
 Arguments:
 file: specifies the numpy array to be reconstructed.
-Return:
-		200: the reconstructed numpy array.
+#### Return:
+```
+200: the reconstructed numpy array.
 400: an error message if error occurred at runtime.
-	Example:
-		file_data = {'file': memfile}
+```
+#### Example:
+```
+file_data = {'file': memfile}
 res = requests.post(url="URL:port/decompress_nparray_bz2", files=file_data)
+```
 
-
-
-11.	compress_obj
-
-Description:
-		Losslessly compress a python object using the default compression algorithm.
+### 11.	compress_obj
+#### Description:
+Losslessly compress a python object using the default compression algorithm.
 Arguments:
-		file: the specified python object to be compressed. It is in a pickled format.
-Return:
-	200: the compressed python object.
+file: the specified python object to be compressed. It is in a pickled format.
+### Return:
+```
+200: the compressed python object.
 400: an error message if error occurred at runtime.
-Example:
+```
+#### Example:
+```
 file_data = {'file': memfile}
 res = requests.post(url="/compress_nparray_obj", files=file_data)
+```
 
-12.	decompress_obj
-
-Description:
+### 12.	decompress_obj
+#### Description:
 Reconstruct a compressed python object.
 Arguments:
 file: specifies the python object to be reconstructed.
-Return:
-		200: the reconstructed python object.
+#### Return:
+```
+200: the reconstructed python object.
 400: an error message if error occurred at runtime.
-	Example:
-		file_data = {'file': memfile}
+```
+#### Example:
+```
+file_data = {'file': memfile}
 res = requests.post(url="URL:port/decompress_obj", files=file_data)
+```
 
-
-
-13.	clustering_compress_dataset
-
-Description:
-		Compress dataset using the clustering approach.
+### 13.	clustering_compress_dataset
+#### Description:
+Compress dataset using the clustering approach.
 Arguments:
-		num_cluster: an integer specifying the number of clusters to be produced.
-		file: specifies the dataset to be compressed.
-Return:
-		200: the compressed dataset in a pickled format.
+num_cluster: an integer specifying the number of clusters to be produced.
+file: specifies the dataset to be compressed.
+#### Return:
+```
+200: the compressed dataset in a pickled format.
 400: an error message if error occurred at runtime.
-Example:
-		meta_data = {'num_cluster': n_cluster}
+```
+#### Example:
+```
+meta_data = {'num_cluster': n_cluster}
 file_data = {'file': memfile}
 res = requests.post(url="URL:port/clustering_compress_dataset", data=meta_data, files=file_data)
+```
 
-
-
-14.	clustering_decompress_dataset
-
-Description:
+### 14.	clustering_decompress_dataset
+#### Description:
 Reconstruct a compressed dataset.
 Arguments:
 num_points_in_cluster: an integer specifying the number of samples in each cluster.
 file: specifies the dataset to be reconstructed.
-Return:
-		200: the reconstructed dataset.
+#### Return:
+```
+200: the reconstructed dataset.
 400: an error message if error occurred at runtime.
-           Example:
+```
+#### Example:
+```
 meta_data = {'num_points_in_cluster': n_points_in_cluster}
 file_data = {'file': memfile}
 res = requests.post(url='URL:port/clustering_decompress_dataset', data=meta_data, files=file_data)
+```
 
-
-15.	extract_mfcc
-
-Description:
-		Extract MFCCs (Mel-Frequency Cepstral Coefficients) from sounds.
+#### 15.extract_mfcc
+#### Description:
+Extract MFCCs (Mel-Frequency Cepstral Coefficients) from sounds.
 Arguments:
-		path: a string specifying the path to sound dataset.
+path: a string specifying the path to sound dataset.
 file: specifies the sound dataset from which to extract MFCCs and it is in a pickled      format.
-Return:
-		200: the extracted labels and MFCCs in a pickled form.
+#### Return:
+```
+200: the extracted labels and MFCCs in a pickled form.
 400: an error message if error occurred at runtime.
-Example:
-		meta_data = {'path': './examples/audio_data/dataset'}
+```
+#### Example:
+```
+meta_data = {'path': './examples/audio_data/dataset'}
 file_data = {'file': memfile}
 res = requests.post(url='URL:port/extract_mfcc', data=meta_data, files=file_data)
+```
 
-
-
-
-
-
-
-
-
-
-
-16.	ae_extract_feature
-
-Description:
-	Extract features from a dataset using autoencoder.
+### 16.	ae_extract_feature
+#### Description:
+Extract features from a dataset using autoencoder.
 Arguments:
 	input_dim: an integer specifying the dimension of input dataset.
 	output_dim: an integer specifying the dimension of the extracted data.
@@ -289,32 +299,36 @@ Arguments:
 	epochs: an integer specifying the number of iterations.
 	file_train: specifies the training dataset.
 	file_test: specifies the dataset from which to extract features.
-Return:
-	200: the extracted features which are in a pickled format.
+#### Return:
+```
+200: the extracted features which are in a pickled format.
 400: an error message if error occurred at runtime.
-Example:
-    	meta_data = {'input_dim': 784, 'output_dim': 16, 'num_layers': 7, 'epochs': 10}
+```
+#### Example:
+```
+meta_data = {'input_dim': 784, 'output_dim': 16, 'num_layers': 7, 'epochs': 10}
 file_data = {'file_train': memfile_train, 'file_test': memfile_test}
 res = requests.post(url='URL/ae_extract_feature',      data=meta_data, files=file_data)
+```
 
-
-
-17.	pca_analysis
-
-Description:
-		Extract principal components from a dataset using principal component analysis.
+### 17.	pca_analysis
+#### Description:
+Extract principal components from a dataset using principal component analysis.
 Arguments:
-		percentage: a float number specifying the number of principal components.
-		file_train: specifies the training dataset used to train the model.
-		file_test specifies the dataset from which to extract principal components.
-Return:
-	200: the extracted principal components in a pickled form.
- 	400: an error message if error occurred at runtime.
-Example:
-    	meta_data = {'percentage': 0.95}
-    	file_data = {'file_train': memfile_train, 'file_test': memfile_test}
+percentage: a float number specifying the number of principal components.
+file_train: specifies the training dataset used to train the model.
+file_test: specifies the dataset from which to extract principal components.
+#### Return:
+```
+200: the extracted principal components in a pickled form.
+400: an error message if error occurred at runtime.
+```
+#### Example:
+```
+meta_data = {'percentage': 0.95}
+file_data = {'file_train': memfile_train, 'file_test': memfile_test}
 res = requests.post(url='URL', data=meta_data, files=file_data)
-		
+```		
 
 ## Interpreting the Output
  
