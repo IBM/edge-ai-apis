@@ -41,7 +41,6 @@ The status code 200 indicates success, and the status code 400 denotes an error 
 ### 1.	wav-to-mp3
 #### Description:  
 Converts a wav audio clip to an mp3 audio clip.
-
 #### Arguments: 
 ```
 rate: a string defining the compression data rate and ‘128k’, ‘192k’ and ‘256k’ are allowed
@@ -65,6 +64,7 @@ Converts an mp3 audio clip to a wav audio clip.
 #### Arguments:
 ```
 file: specifies the mp3 audio clip to be decompressed.
+```
 #### Return:
 ```
 200: the resulting wav clip
@@ -81,8 +81,7 @@ res = requests.post(url="URL:port/mp3_to_wav", files=file_data)
 Compress an image to JPEG image
 #### Arguments:
 ```
-quality: an integer specifying the quality of the compressed JPEG image. 
-It ranges from 0 to 100.
+quality: an integer specifying the quality of the compressed JPEG image ranging from 0 to 100.
 file: specifies the image to be compressed
 ```
 #### Return:
@@ -136,8 +135,10 @@ res = requests.post(url="URL:port/compress_nparray", files=file_data)
 ### 6.	decompress_nparray
 #### Description:
 Reconstruct a compressed numpy array.
-Arguments:
+#### Arguments:
+```
 file: specifies the numpy array to be reconstructed.
+```
 #### Return:
 ```
 200: the reconstructed numpy array. It is in a pickled format.
@@ -152,8 +153,10 @@ res = requests.post(url="URL:port/decompress_nparray", files=file_data)
 ### 7.	compress_nparray_zlib
 #### Description:
 Losslessly compress a numpy array using the zlib algorithm.
-Arguments:
+#### Arguments:
+```
 file: the specified numpy array to be compressed. It is in a pickled format.
+```
 #### Return:
 ```
 200: the compressed numpy array.
@@ -168,8 +171,10 @@ res = requests.post(url="URL:port/compress_nparray_zlib", files=file_data)
 ### 8.	decompress_nparray_zlib
 #### Description:
 Reconstruct the specified numpy array using the zlib algorithm.
-Arguments:
+#### Arguments:
+```
 file: specifies the numpy array to be reconstructed.
+```
 #### Return:
 ```
 200: the reconstructed numpy array. It is in a pickled format.
@@ -184,8 +189,10 @@ res = requests.post(url="URL:port/decompress_nparray_zlib", files=file_data)
 ### 9.	compress_nparray_bz2
 #### Description:
 Losslessly compress a numpy array using the bz2 algorithm.
-Arguments:
+#### Arguments:
+```
 file: the specified numpy array to be compressed using the bz2 algorithm.
+```
 #### Return:
 ```
 200: the compressed numpy array.
@@ -200,8 +207,10 @@ res = requests.post(url="URL:port/compress_nparray_bz2", files=file_data)
 ### 10.	decompress_nparray_bz2
 #### Description:
 Reconstruct a bz2-compressed numpy array.
-Arguments:
+#### Arguments:
+```
 file: specifies the numpy array to be reconstructed.
+```
 #### Return:
 ```
 200: the reconstructed numpy array.
@@ -216,8 +225,10 @@ res = requests.post(url="URL:port/decompress_nparray_bz2", files=file_data)
 ### 11.	compress_obj
 #### Description:
 Losslessly compress a python object using the default compression algorithm.
-Arguments:
+#### Arguments:
+```
 file: the specified python object to be compressed. It is in a pickled format.
+```
 ### Return:
 ```
 200: the compressed python object.
@@ -232,8 +243,10 @@ res = requests.post(url="/compress_nparray_obj", files=file_data)
 ### 12.	decompress_obj
 #### Description:
 Reconstruct a compressed python object.
-Arguments:
+#### Arguments:
+```
 file: specifies the python object to be reconstructed.
+```
 #### Return:
 ```
 200: the reconstructed python object.
@@ -248,9 +261,11 @@ res = requests.post(url="URL:port/decompress_obj", files=file_data)
 ### 13.	clustering_compress_dataset
 #### Description:
 Compress dataset using the clustering approach.
-Arguments:
+#### Arguments:
+```
 num_cluster: an integer specifying the number of clusters to be produced.
 file: specifies the dataset to be compressed.
+```
 #### Return:
 ```
 200: the compressed dataset in a pickled format.
@@ -266,9 +281,11 @@ res = requests.post(url="URL:port/clustering_compress_dataset", data=meta_data, 
 ### 14.	clustering_decompress_dataset
 #### Description:
 Reconstruct a compressed dataset.
-Arguments:
+#### Arguments:
+```
 num_points_in_cluster: an integer specifying the number of samples in each cluster.
 file: specifies the dataset to be reconstructed.
+```
 #### Return:
 ```
 200: the reconstructed dataset.
@@ -284,9 +301,11 @@ res = requests.post(url='URL:port/clustering_decompress_dataset', data=meta_data
 #### 15.extract_mfcc
 #### Description:
 Extract MFCCs (Mel-Frequency Cepstral Coefficients) from sounds.
-Arguments:
+#### Arguments:
+```
 path: a string specifying the path to sound dataset.
-file: specifies the sound dataset from which to extract MFCCs and it is in a pickled      format.
+file: specifies the sound dataset from which to extract MFCCs and it is in a pickled format.
+```
 #### Return:
 ```
 200: the extracted labels and MFCCs in a pickled form.
@@ -302,13 +321,15 @@ res = requests.post(url='URL:port/extract_mfcc', data=meta_data, files=file_data
 ### 16.	ae_extract_feature
 #### Description:
 Extract features from a dataset using autoencoder.
-Arguments:
-	input_dim: an integer specifying the dimension of input dataset.
-	output_dim: an integer specifying the dimension of the extracted data.
-	num_layers: an integer specifying the number of layers of neural network.
-	epochs: an integer specifying the number of iterations.
-	file_train: specifies the training dataset.
-	file_test: specifies the dataset from which to extract features.
+#### Arguments:
+```
+input_dim: an integer specifying the dimension of input dataset.
+output_dim: an integer specifying the dimension of the extracted data.
+num_layers: an integer specifying the number of layers of neural network.
+epochs: an integer specifying the number of iterations.
+file_train: specifies the training dataset.
+file_test: specifies the dataset from which to extract features.
+```
 #### Return:
 ```
 200: the extracted features which are in a pickled format.
@@ -324,10 +345,12 @@ res = requests.post(url='URL/ae_extract_feature',      data=meta_data, files=fil
 ### 17.	pca_analysis
 #### Description:
 Extract principal components from a dataset using principal component analysis.
-Arguments:
+#### Arguments:
+```
 percentage: a float number specifying the number of principal components.
 file_train: specifies the training dataset used to train the model.
 file_test: specifies the dataset from which to extract principal components.
+```
 #### Return:
 ```
 200: the extracted principal components in a pickled form.
@@ -342,5 +365,5 @@ res = requests.post(url='URL', data=meta_data, files=file_data)
 
 ## Interpreting the Output
  
-blah blah here
+See Return code explanations.
 
