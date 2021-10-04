@@ -1,5 +1,6 @@
 
 # Edge AI Coreset API Overview
+Smart compression and data extraction with Coreset API.
 
 In edge computing, there are many applications where data collected from edge locations needs to be transmitted to a central location for processing (e.g., model training, federated inferencing), so that knowledge obtained at the edges can be combined to produce a global view. As the amount of data collected at the edges can be huge, data compression is needed to efficiently deliver different types of data over networks due to transmission cost and latency without losing data fidelity.
 
