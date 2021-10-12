@@ -13,3 +13,674 @@ In edge computing, there are many applications where edge devices are typically 
   •	Candidates for quantization – Weights; Biases (though not recommended); Activations/Outputs.
   
   •	Tradeoff between Accuracy, Storage, Space, Memory.
+  
+  
+  # Edge AI Model Adaptation RESTFul API Tutorial
+
+This tutorial is intended to teach the audience to test the Edge SDK
+Model Adaptation component. We provide APIs to perform model compression via
+structured channel pruning for both TensorFlow and PyTorch models. Structured pruning performs
+a one-shot pruning and returns the model with a user defined sparcity. Re-training will be performed by the user.  For quick reference, developers can read [Pruning Filters for Efficient ConvNets](https://arxiv.org/abs/1608.08710).
+
+## Requirements
+
+First, please install Python 3.8+, and the basic requirements:
+
+```bash
+
+pip install sklearn numpy keras tensorflow==2.3 torch==1.8.1 torchvision
+
+```
+
+## Creating a TensorFlow Model
+
+First, we can build a TensorFlow model. We can define it as follows:
+
+```python
+# AlexNet
+# source https://towardsdatascience.com/implementing-alexnet-cnn-architecture-using-tensorflow-2-0-and-keras-2113e090ad98
+# baseline cnn model for AlexNet
+from sklearn.model_selection import KFold
+
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.optimizers import SGD
+from tensorflow.python.framework import type_spec as type_spec_module
+import os
+import numpy as np
+import time
+
+
+# load train and test dataset
+def load_dataset():
+    # load dataset
+    (trainX, trainY), (testX, testY) = mnist.load_data()
+    # reshape dataset to have a single channel
+    trainX = trainX.reshape((trainX.shape[0], 28, 28, 1))
+    testX = testX.reshape((testX.shape[0], 28, 28, 1))
+    # one hot encode target values
+    trainY = to_categorical(trainY)
+    testY = to_categorical(testY)
+
+    trainX = trainX[:1000]
+    trainY = trainY[:1000]
+    testX = testX[:1000]
+    testY = testY[:1000]
+
+    print(f'trainX.shape: {trainX.shape}')
+    return trainX, trainY, testX, testY
+
+
+# scale pixels
+def prep_pixels(train, test):
+    # convert from integers to floats
+    train_norm = train.astype('float32')
+    test_norm = test.astype('float32')
+    # normalize to range 0-1
+    train_norm = train_norm / 255.0
+    test_norm = test_norm / 255.0
+    # return normalized images
+    return train_norm, test_norm
+
+
+def compile_model(model):
+    opt = SGD(lr=0.01, momentum=0.9)
+    model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
+
+
+def define_model():
+    """Model with activation layers"""
+    model = keras.Sequential() #.to(device=device)
+    model.add(keras.layers.Conv2D(32, (3, 3), kernel_initializer='he_uniform', input_shape=(28, 28, 1)))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation('relu'))
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.add(keras.layers.Conv2D(64, (3, 3), kernel_initializer='he_uniform'))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation('relu'))
+    model.add(keras.layers.Conv2D(32, (3, 3), kernel_initializer='he_uniform'))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation('relu'))
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(100, activation='relu', kernel_initializer='he_uniform'))
+    model.add(keras.layers.Dense(10, activation='softmax'))
+
+    # compile model
+    compile_model(model)
+
+    return model
+```
+
+Above we defined a `load_dataset()` method, as well as a pre-processor in `prep_pixels()`. We limit the dataset to only 1000 elements to keep training short. However,
+we can ommit the lines:
+
+```python
+    trainX = trainX[:1000]
+    trainY = trainY[:1000]
+    testX = testX[:1000]
+    testY = testY[:1000]
+```
+
+We Now proceed to initialize the timer, dataset, and model:
+
+```python
+
+current_milli_time = lambda: int(round(time.time() * 1000))
+
+# prepare cross validation
+kfold = KFold(5, shuffle=True, random_state=1)
+
+
+train_ds_X, train_ds_Y, test_ds_X, test_ds_Y = load_dataset()
+train_ds_X, test_ds_X = prep_pixels(train_ds_X, test_ds_X)
+
+# define model
+model = define_model()
+```
+
+We now can train the model as follows:
+
+```python
+# enumerate splits
+for train_ix, test_ix in kfold.split(train_ds_X):
+    
+    # select rows for train and test
+    trainX, trainY, testX, testY = train_ds_X[train_ix], train_ds_Y[train_ix], test_ds_X[test_ix], test_ds_Y[test_ix]
+    # fit model
+    history = model.fit(trainX, trainY, epochs=10, batch_size=32, validation_data=(testX, testY), verbose=0)
+    # evaluate model
+
+    _, acc = model.evaluate(testX, testY, verbose=0)
+
+    print('> %.3f' % (acc * 100.0))
+
+    latest_trainX = trainXß
+    latest_trainY = trainY
+    latest_testX = testX
+    latest_testY = testY
+```
+
+We keep a subset of the dataset in `latest_*` for evaluation.
+
+Next, we time the prediction for comparison and print the original model
+stats as well as summary.
+
+```python
+t2 = 0.0
+for i in range(0, len(latest_testX)):
+    
+    img = latest_testX[i]
+    img = (np.expand_dims(img,0))
+
+    t1 = current_milli_time()
+    prediction = model.predict(img)
+    t2 += current_milli_time() - t1
+
+t2 /= float(len(latest_testX))
+
+print('> Original Model Accuracy: %.3f' % (acc * 100.0))
+print('> Original Model Inference Time: {}'.format(t2))
+
+model.summary()
+
+```
+
+Now, we will save the full model as follows:
+
+```python
+    model.save('mnist_base.h5')
+```
+
+Please note the file name as we will need it to test the APIs.
+
+## Testing the RESTFul APIs
+
+One-shot pruning is an iterative approach, as in, the user defines the percentage
+of channels to prune, the API will prune it, and the user will re-train it
+to recover the desired accuracy.
+
+Given the model `mnist_base.h5`, we want to prune it, re-train it, and evaluate it.
+
+There are two ways to access the APIs, either command line through the
+`curl` command, or through the web interface.
+
+### curl Interface
+
+#### TensorFlow Pruning
+
+The TensorFlow endpoint will look as follows: `https://<IP>:443/api/tf_prune`.
+
+First, users need to navigate to the directory where they saved the `mnist_base.h5` 
+file.
+
+Users can then invoke the pruning API as follows:
+
+```bash
+    curl -X POST "https://edge-api.sl.cloud9.ibm.com:443/api/tf_prune?percent=0.4" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "model=@mnist_base.h5;type=" 
+```
+
+The API's parameters are:
+
+
+* `file` - This can be either a `.zip` file containing the zipped 
+directory saved via the `save()` interface or an `.h5` file. 
+
+* `percent` - This is the desired sparcity. For example, 0.4 means target 40% less channels. So in theory, the size of the model will be 60% of the original size.
+
+* `ommitted` - This is the list of layers we want to omit from pruning. Some output layers should fall under this category.
+
+Sample output is:
+
+```bash
+    {"txid":"c5727f10-fa19-11eb-9294-acde48001122", "message":"Successfully submitted transaction."}
+```
+
+Save the `txid` as it is needed to query the API for the operation status. 
+
+If the upload fails, the `txid` field will be `None` or `N/A`, and the
+`message` field will contain the error message.
+
+
+#### Process Status
+
+The status of each transaction/request can be obtained via the status API. When
+the request for pruning is executed, we obtain a transaction id (`txid`) as a result. We can use
+that `txid` to check the status of the call itself. For example:
+
+
+```bash
+     curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/status/?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+```
+
+The API will return the status:
+
+```bash
+    {"filename":"tmpsq9t0mmh.pt","status":0,"message":"Successfully submitted transaction."}
+```
+
+If the model is either queued or failed, the return will be different. It will have the `status`
+field as well as a `message` field. No `filename` would be returned in that case.
+
+
+#### Downloading a Pruned Model
+
+In order to download a pruned model. Users can use the `download` API as follows:
+
+```bash
+    curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/download?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100 2846k  100 2846k    0     0   198M      0 --:--:-- --:--:-- --:--:--  198M
+```
+
+Where the requirement is the `txid`. 
+
+If the model pruning has failed, this API will return a `message` with the reason
+behind the failure and the `status` of the transaction:
+
+```bash
+    {"status":-1,"message":"No transaction submitted for txid"}
+```
+
+### Swagger UI
+
+We have a Swagger/Web interface users can use to test the APIs as well. Users
+will need to use the browser of their choice and navigate to the API's docs 
+URL. For example:
+
+`https://edge-api.sl.cloud9.ibm.com:443/docs`
+
+
+#### Model Pruning
+
+First, we navigate to `tf_prune` in order to upload the model saved earlier:
+
+
+```python
+    model.save('mnist_base.h5')
+```
+
+First, we select the `/mnist_base.h5` from the file system, add the desired 
+sparcity percentage, and optionally pass the layers to be ommited:
+
+![TensorFlow Pruning ](images/tfprune.png)
+
+
+This will create a response:
+
+![TensorFlow Pruning Response](images/tfpruneres.png)
+
+Please save the transaction ID (txid) value from the response field:
+
+![TensorFlow Pruning Response TXID](images/txid.png)
+
+#### Pruning Status
+
+Next, we can check the status of the pruning request. All requests are asynchronous, as model uploading, pruning, etc., may be time consuming.
+
+Now, go to the `/status` page, and enter the `txid`:
+
+![Pruning Status](images/status.png)
+
+We can then see the response:
+
+![Pruning Status Response](images/statusres.png)
+
+Note that the `status` is 0 (Done). Anything else will be accompanied by a message. In such event, models are not downloadable as the system may still be processing requests or the request has failed.
+
+#### Model Download
+
+Finally, we can navigate to the `/download` endpoint, and enter the `txid` to download the model:
+
+![Model Download](images/download.png)
+
+We can then see the response:
+
+![Model Download Response](images/downloadres.png)
+
+When the request completes, the model will be downloadable via the `Download file` link.
+
+
+## Testing Pruned Model
+
+Once the file is downloaded, it will be given a temp file name (e.g., `tmps34cdcmd.h5`), users can then load it via the
+`model = tf.keras.models.load_model('tmps34cdcmd.h5')` API.
+
+For example:
+
+```python
+pruned_model = tf.keras.models.load_model('tmps34cdcmd.h5')
+pruned_model.summary()
+```
+
+Now we re-train the model to get our accuracy back:
+
+```python
+
+compile_model(pruned_model)
+
+for train_ix, test_ix in kfold.split(train_ds_X):
+    
+    # select rows for train and test
+    trainX, trainY, testX, testY = train_ds_X[train_ix], train_ds_Y[train_ix], test_ds_X[test_ix], test_ds_Y[test_ix]
+    # fit model
+    history = pruned_model.fit(trainX, trainY, epochs=10, batch_size=32, validation_data=(testX, testY), verbose=0)
+    # evaluate model
+
+    _, acc = pruned_model.evaluate(testX, testY, verbose=0)
+
+    print('> %.3f' % (acc * 100.0))
+
+t2 = 0.0
+for i in range(0, len(latest_testX)):
+    
+    img = latest_testX[i]
+    img = (np.expand_dims(img,0))
+
+    t1 = current_milli_time()
+    prediction = model.predict(img)
+    t2 += current_milli_time() - t1
+
+t2 /= float(len(latest_testX))
+
+print('> Pruned Model Accuracy: %.3f' % (acc * 100.0))
+print('> Pruned Model Inference Time: {}'.format(t2))
+
+pruned_model.save('mnist_pruned.h5')
+
+```
+
+## PyTorch Models
+
+PyTorch has some limitations when saving the full model. This is more or a Pickle issue than PyTorch, however, PyTorch relies on Pickle for serialization, thus, it suffers from the same issue. For the time being, we cannot save full PyTorch models and upload them directly into the cloud. This is because when the model is loaded, it looks for class names and some other environment-specific metadata, that is only present in the developer's machine. This means that we require PyTorch models to upload two files for the model. Mainly, the model definition and the model weights (state dictionary).
+
+
+First, we define the model and all other helpers:
+
+```python
+
+    from __future__ import print_function
+    import argparse
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    import torch.optim as optim
+    from torchvision import datasets, transforms
+    from torch.optim.lr_scheduler import StepLR
+
+    class Net(nn.Module):
+        def __init__(self):
+            super(Net, self).__init__()
+            self.conv1 = nn.Conv2d(1, 32, 3, 1)
+            self.conv2 = nn.Conv2d(32, 64, 3, 1)
+            self.dropout1 = nn.Dropout(0.25)
+            self.dropout2 = nn.Dropout(0.5)
+            self.fc1 = nn.Linear(9216, 128)
+            self.fc2 = nn.Linear(128, 10)
+
+        def forward(self, x):
+            x = self.conv1(x)
+            x = F.relu(x)
+            x = self.conv2(x)
+            x = F.relu(x)
+            x = F.max_pool2d(x, 2)
+            x = self.dropout1(x)
+            x = torch.flatten(x, 1)
+            x = self.fc1(x)
+            x = F.relu(x)
+            x = self.dropout2(x)
+            x = self.fc2(x)
+            output = F.log_softmax(x, dim=1)
+            return output
+
+
+    def train(args, model, device, train_loader, optimizer, epoch):
+        model.train()
+        for batch_idx, (data, target) in enumerate(train_loader):
+            data, target = data.to(device), target.to(device)
+            optimizer.zero_grad()
+            output = model(data)
+            loss = F.nll_loss(output, target)
+            loss.backward()
+            optimizer.step()
+            if batch_idx % args.log_interval == 0:
+                print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                    epoch, batch_idx * len(data), len(train_loader.dataset),
+                    100. * batch_idx / len(train_loader), loss.item()))
+                if args.dry_run:
+                    break
+
+
+    def test(model, device, test_loader):
+        model.eval()
+        test_loss = 0
+        correct = 0
+        with torch.no_grad():
+            for data, target in test_loader:
+                data, target = data.to(device), target.to(device)
+                output = model(data)
+                test_loss += F.nll_loss(output, target, reduction='sum').item()  # sum up batch loss
+                pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
+                correct += pred.eq(target.view_as(pred)).sum().item()
+
+        test_loss /= len(test_loader.dataset)
+
+        print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+            test_loss, correct, len(test_loader.dataset),
+            100. * correct / len(test_loader.dataset)))
+
+```
+
+Next, we initialize, build, and train the model.
+
+```python
+
+    use_cuda = not args.no_cuda and torch.cuda.is_available()
+
+    torch.manual_seed(args.seed)
+
+    device = torch.device("cuda" if use_cuda else "cpu")
+
+    train_kwargs = {'batch_size': args.batch_size}
+    test_kwargs = {'batch_size': args.test_batch_size}
+    if use_cuda:
+        cuda_kwargs = {'num_workers': 1,
+                    'pin_memory': True,
+                    'shuffle': True}
+        train_kwargs.update(cuda_kwargs)
+        test_kwargs.update(cuda_kwargs)
+
+    transform=transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+        ])
+    dataset1 = datasets.MNIST('../data', train=True, download=True,
+                    transform=transform)
+    dataset2 = datasets.MNIST('../data', train=False,
+                    transform=transform)
+    train_loader = torch.utils.data.DataLoader(dataset1,**train_kwargs)
+    test_loader = torch.utils.data.DataLoader(dataset2, **test_kwargs)
+
+    model = Net().to(device)
+    optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
+
+    scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
+    for epoch in range(1, args.epochs + 1):
+        train(args, model, device, train_loader, optimizer, epoch)
+        test(model, device, test_loader)
+        scheduler.step()
+
+    #if args.save_model:
+    torch.save(train_loader, 'train_loader.pth')
+    torch.save(model.state_dict(), "mnist_cnn.pth")
+
+
+```
+
+Now we can either use the RESTFul interface or the UI similarly to the TensorFlow implementation.
+
+### curl Interface
+
+#### PyTorch Pruning
+
+For PyTorch, we need a few extra parameters as we cannot directly load the module and run
+the model. This is because of the limitations in Pickle.
+
+In order to invoke the restful API, we need to specify the following fields:
+
+* `file` - This is the state dictionary. For example:
+```python
+    torch.save(model.state_dict(), "mnist_cnn.pth")
+```
+
+* `dataset` - This is a sample dataset generated by saving the dataset using the `torch.save()` method. For example:
+
+```python
+    train_loader = torch.utils.data.DataLoader(dataset1,**train_kwargs)
+    torch.save(train_loader, 'train_loader.pth')
+```
+
+* `class_def` - This is the python file with all the necessary libraries needed to build the model. This must be a stand alone
+python file. The only libraries that we support are the base torch library. See example below:
+
+```python
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+
+    class Net(nn.Module):
+        def __init__(self):
+            super(Net, self).__init__()
+            self.conv1 = nn.Conv2d(1, 32, 3, 1)
+            self.conv2 = nn.Conv2d(32, 64, 3, 1)
+            self.dropout1 = nn.Dropout(0.25)
+            self.dropout2 = nn.Dropout(0.5)
+            self.fc1 = nn.Linear(9216, 128)
+            self.fc2 = nn.Linear(128, 10)
+
+        def forward(self, x):
+            x = self.conv1(x)
+            x = F.relu(x)
+            x = self.conv2(x)
+            x = F.relu(x)
+            x = F.max_pool2d(x, 2)
+            x = self.dropout1(x)
+            x = torch.flatten(x, 1)
+            x = self.fc1(x)
+            x = F.relu(x)
+            x = self.dropout2(x)
+            x = self.fc2(x)
+            output = F.log_softmax(x, dim=1)
+            return output
+```
+
+* `model_name` - This is the main class of the model. We assume that the model is created via a generic constructor, with no parameters (e.g., `model = Net()`).
+
+* `percent` - This is the desired sparcity. For example, 0.4 means target 40% less channels. So in theory, the size of the model will be 60% of the original size.
+
+* `unprunable` - This is the list of layers we want to omit from pruning. Most output layers should fall under this category.
+
+* `input_size` - This is the input size of the model input. Can be obtained by getting an inference instance and looking at the `shape` of the tensor or numpy array.
+
+* `model_type` - We define two types, `pt` and `tf`. Use them with their respective fields as pruning enforces them all and the process will fail.
+
+The API can be invoked as follows:
+
+```bash
+    curl -X POST "https://edge-api.sl.cloud9.ibm.com:443/api/pt_prune?percent=0.4&ommitted=fc1%2Cfc2&input_size=1%2C28%2C28&model_name=Net" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "weights=@mnist_cnn.pth;type=" -F "dataset=@train_loader.pth;type=" -F "class_def=@model.py;type=text/x-python-script"
+```
+
+
+
+### Process Status
+
+The status of each transaction/request can be obtained via the status API. When
+the request for pruning is executed, we obtain a transaction id (`txid`) as a result. We can use
+that `txid` to check the status of the call itself. For example:
+
+
+```bash
+     curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/status/?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+```
+
+The API will return the status:
+
+```bash
+    {"filename":"tmpsq9t0mmh.pt","status":0}
+```
+
+If the model is either queued or failed, the return will be different. It will have the `status`
+field as well as a `message` field. No `filename` would be returned in that case.
+
+### Downloading a Pruned Model
+
+In order to download a pruned model. Users can use the `download` API as follows:
+
+```bash
+    curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/download?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100 2846k  100 2846k    0     0   198M      0 --:--:-- --:--:-- --:--:--  198M
+```
+
+Where the requirement is the `txid`. The desired filename is passed via the `--output`
+flag above. The `status` API will return the name of the model as it was generated 
+by the pruning APIs.
+
+
+### Swagger UI
+
+#### PyTorch Prune Interface
+To test the PyTorch pruning API, navigate to the `/pt_prune` endpoint and enter all the necessary fields:
+
+![Pruning Status](images/ptprune.png)
+
+This will give us a response that looks as follows:
+
+![Pruning Status](images/ptpruneres.png)
+
+
+The next step is to check the status and download the model. These steps are the same as the TensorFlow instance.
+
+#### PyTorch Prune Status Interface
+
+![Pruning Status](images/statuspt.png)
+
+
+#### PyTorch Prune Download Interface
+
+![Pruning Status](images/downloadpt.png)
+
+
+### Testing the Model
+
+Once the model is downloaded, we can load it as follows:
+
+```python
+
+    use_cuda = not args.no_cuda and torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
+
+    model = Net().to(device)
+    model.load_state_dict(torch.load('tmpbev7r2ej.pt', map_location=torch.device(device)))
+    model.eval()
+
+```
+
+Now, developers can re-train the model using their standard training loop. For example:
+
+
+```python
+    scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
+    for epoch in range(1, args.epochs + 1):
+        train(args, model, device, train_loader, optimizer, epoch)
+        test(model, device, test_loader)
+        scheduler.step()
+    torch.save(model.state_dict(), "pruned_trained_cnn.pt")
+```
+
