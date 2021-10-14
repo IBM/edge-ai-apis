@@ -67,7 +67,7 @@ The results field contains the actual results. One can start interpreting the re
 In order to use the APIs effectively, we provide a step-by-step guide on using the Federated DataOps API to assess and remediate data quality issues with a text tabular data set. 
 The tutorial is a complete Python notebook to help you get started using the API, which you can run in your preferred IDE.
 ​
-#Prerequisite
+# Prerequisite
 Before proceeding to the follow the steps of the notebook, ensure you are already subscribed for a trial of the APIHub to obtain the Client ID and Client Secret to authorize API request. 
 You need to provide these keys in the header of your request - like so...
 ```python
