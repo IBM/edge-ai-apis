@@ -7,7 +7,7 @@ The Edge AI APIs are early access offering from IBM Research to enable AI at the
 ![alt text](https://github.ibm.com/wendych/IBM-Research-NGS/blob/master/Images/EdgeAI_HighLevel_Arch_v1.png)
 
 
-## Get Trial Subscription and how to get the API keys: 
+## Get Trial Subscription and getting API keys to get access: 
 LINK 
 
 
