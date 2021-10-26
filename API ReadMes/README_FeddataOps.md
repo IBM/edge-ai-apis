@@ -2,13 +2,13 @@
 Smart data remediation and curation with Federated DataOps API.
 
 Data generated at the edge of network creates many challenges for data scientists and data engineers.  Data at various geographic locations may have different quality and provenance, and data needs to be self-managing without requiring manual intervention and prepares the data ready for AI pipeline. 
-.
+​
 Data Quality for AI API and Federated DataOps APIs solves this problem.
-.
+​
 Data Quality for AI performs the following:
 a)	Quantifies data quality
 b)	Remediates data with explanation 
-.
+​
 Federated DataOps extended DQAI with the following enhanced capabilities:
 1)	Model and Data Utility creation
 2)	Data Validation
