@@ -1,9 +1,18 @@
+​
+Smart data remediation and curation with Federated DataOps API.
+
+Data generated at the edge of network creates many challenges for data scientists and data engineers.  Data at various geographic locations may have different quality and provenance, and data needs to be self-managing without requiring manual intervention and prepares the data ready for AI pipeline. Data Quality for AI API and Federated DataOps APIs solves this problem.
+Data Quality for AI performs the following:
+a)	Quantifies data quality
+b)	Remediates data with explanation 
+Federated DataOps extended DQAI with the following enhanced capabilities:
+1)	Model and Data Utility creation
+2)	Data Validation
+3)	Data Imputation
+4)	Data Noise 
 
 ​
-# Federated DataOps v1.0 [![Build Status](https://travis.ibm.com/data-readiness-for-ai/dart.svg?token=FteDhaP1ixcbGERzJ2he&branch=master)](https://travis.ibm.com/data-readiness-for-ai/dart)
-`Repo for all version 1.0 APIs for Federate DataOps`
-​
-Federated DataOps is a library extending the data assessment and remediation functions found in the Data Assessment and Readiness Toolkit (DART) with data and label remediation for tabular data sets with text data. Each function provides a quality score and a an explanation towards remediation
+Federated DataOps is a library extending the data assessment and remediation functions found in the Data Quality for AI with data and label remediation for tabular data sets with text data. Each function provides a quality score and a an explanation towards remediation
 These metrics quantify data issues as a score between 0 and 1, where 1 indicates no issues were detected. Currently, these metrics are for text tabular datasets and accepts the input in the form of a comma .    
 ​
 Version 1.0 of the Federated Data Ops API is concerned with accessing data quality for a single edge site. Future iterations planned for version 2 of the library are to enable federated edge data quality assessment, such as schema reconciliation methods like column mapping and label standardization.
