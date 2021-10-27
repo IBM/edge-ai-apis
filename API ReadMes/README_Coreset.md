@@ -35,7 +35,7 @@ REST APIs are using an HTTP post method to invoke the backend Coreset service. T
 
 In the following, a sample is given for each method in python syntax. 
 
-All the calls have a format of res = requests.post(url='http://hostname:port/method', data=meta_data, files=file_data) where meta_data defines the arguments passed to the algorithm and file_data specifies the dataset used for processing. The return of each call carries a status code and the processing result in a pickled format. 
+All the calls have a format of res = requests.post(url='http://URL/method', data=meta_data, files=file_data) where meta_data defines the arguments passed to the algorithm and file_data specifies the dataset used for processing. The return of each call carries a status code and the processing result in a pickled format. 
 
 The status code 200 indicates success, and the status code 400 denotes an error condition.
 
