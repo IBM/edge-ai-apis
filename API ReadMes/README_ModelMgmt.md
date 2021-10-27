@@ -1,8 +1,8 @@
-# Edge AI Model Management API Overview
+# Getting Started with Edge AI Model Management API 
 
 Maintain the most suitable models at the edge with (1) model fingerprinting and (2) model outlier detection.
 
-
+## Overview
 ## 1. Model Fingerprinting 
 Model fingerprint solves the problem of model selection, i.e., choosing the most suitable model from a model zoo of pre-trained models.
 
