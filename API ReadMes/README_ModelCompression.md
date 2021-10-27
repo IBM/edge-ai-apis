@@ -1,11 +1,12 @@
-# Edge AI Model Compression API Overview
+# Getting Started with Edge AI Model Compression API
 
 In edge computing, there are many applications where edge devices are typically resource constrained e.g. power, memory, storage, compute or network.  As deep learning and machine learning models become more complex with time, inferencing at the edge of network requires model fine tuning. There are two methods in fine tuning models. 
 
-## 1. Model pruning: 
+## Overview
+### 1. Model pruning: 
    Model size reduction prunes least important weights while keeping the most important neurons.
 
-## 2. Model quantization:
+### 2. Model quantization:
   •	Models are usually represented as multi-dimensional arrays of 32-bit and 64-bit floats.
   
   •	Reduce granularity to 16-bit floats, or 8-bit integers; Go as far as 4-bit and even 1-bit.
@@ -15,14 +16,14 @@ In edge computing, there are many applications where edge devices are typically 
   •	Tradeoff between Accuracy, Storage, Space, Memory.
   
   
-  # Edge AI Model Adaptation RESTFul API Tutorial
+### Edge AI Model Adaptation RESTFul API Tutorial
 
 This tutorial is intended to teach the audience to test the Edge SDK
 Model Adaptation component. We provide APIs to perform model compression via
 structured channel pruning for both TensorFlow and PyTorch models. Structured pruning performs
 a one-shot pruning and returns the model with a user defined sparcity. Re-training will be performed by the user.  For quick reference, developers can read [Pruning Filters for Efficient ConvNets](https://arxiv.org/abs/1608.08710).
 
-## Requirements
+### Requirements
 
 First, please install Python 3.8+, and the basic requirements:
 
