@@ -1,6 +1,8 @@
+## Getting Started with Edge AI Federated DataOps API
 ​
 Smart data remediation and curation with Federated DataOps API.
 
+## Overview
 Data generated at the edge of network creates many challenges for data scientists and data engineers.  Data at various geographic locations may have different quality and provenance, and data needs to be self-managing without requiring manual intervention and prepares the data ready for AI pipeline. 
 ​
 Data Quality for AI (DQAI) API and Federated DataOps API solves this problem.
