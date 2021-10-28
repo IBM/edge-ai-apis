@@ -12,7 +12,13 @@ Methods for model compression:
 
 1. Model pruning: Model size reduction prunes least important weights while keeping the most important neurons.
 
-2. Model quantization:
+2. Model quantization: Models are usually represented as multi-dimensional arrays of 32-bit and 64-bit floats.
+  
+  •	Reduce granularity to 16-bit floats, or 8-bit integers; Go as far as 4-bit and even 1-bit.
+  
+  •	Candidates for quantization – Weights; Biases (though not recommended); Activations/Outputs.
+  
+  •	Tradeoff between Accuracy, Storage, Space, Memory.
 
 ## Interpreting the Output
 ### 1. Model pruning 
@@ -78,14 +84,7 @@ txid: Transaction ID used to look up status of a model, or get a pruned/quantize
 
 
 
-  quantization•	
-  Models are usually represented as multi-dimensional arrays of 32-bit and 64-bit floats.
   
-  •	Reduce granularity to 16-bit floats, or 8-bit integers; Go as far as 4-bit and even 1-bit.
-  
-  •	Candidates for quantization – Weights; Biases (though not recommended); Activations/Outputs.
-  
-  •	Tradeoff between Accuracy, Storage, Space, Memory.
   
   
 ### Edge AI Model Adaptation RESTFul API Tutorial
