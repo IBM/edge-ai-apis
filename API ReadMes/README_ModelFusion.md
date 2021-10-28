@@ -19,5 +19,5 @@ Methods for model fusion:
 ​
 ## Interpreting the Output
 
-Learn more about Model Fusion in this medium.com (blog)[https://sw-ibm.medium.com/?p=df2cff3ac20d]
+Learn more about Model Fusion in this medium.com !blog(https://sw-ibm.medium.com/?p=df2cff3ac20d)
 
