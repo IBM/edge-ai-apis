@@ -19,26 +19,26 @@ Methods for model fusion:
 ​
 ## Interpreting the Output
 
-### 1. Start Aggregator**
+### 1. Start Aggregator
 #### Description:
 The Aggregator is in charge of running the Fusion Algorithm. A fusion algorithm queries the registered parties to carry out the federated learning process. The queries sent vary according to the model/algorithm type. In return, parties send their reply as a model update object, and these model updates are then aggregated according to the specified Fusion Algorithm, specified via a Fusion Handler class.
 #### Arguments:
 ```
-fusion_algorithm*: The name of the fusion algorithm for the federation learning process. Options includes 'fedavg', 'iter_avg', and 'doc2vec'
+fusion_algorithm: The name of the fusion algorithm for the federation learning process. Options includes `fedavg`, `iter_avg`, and `doc2vec`
 
-model_type : The type of model used for fusion. Options includes 'keras', 'pytorch', and 'doc2vec'
+model_type: The type of model used for fusion. Options includes 'keras', 'pytorch', and 'doc2vec'
 
-model_file : The saved initial model to distribute to parties to train in isolation
+model_file: The saved initial model to distribute to parties to train in isolation
 
-num_parties : The number of nodes participating in the fusion
+num_parties: The number of nodes participating in the fusion
 
-rounds : The number of fusion rounds to complete
+rounds: The number of fusion rounds to complete
 
-epochs : The number of epochs to to train for each fusion round
+epochs: The number of epochs to to train for each fusion round
 
-learning_rate : The learnig rate for the parties to use for training
+learning_rate: The learnig rate for the parties to use for training
 
-optimizer : The name of the optimizer used for training (not applicable for doc2vec). Should be the name used by the keras or pytorch libraries (ex: optim.Adam for pytorch)
+optimizer: The name of the optimizer used for training (not applicable for doc2vec). Should be the name used by the keras or pytorch libraries (ex: optim.Adam for pytorch)
 ```
 ​
 
