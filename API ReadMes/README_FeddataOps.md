@@ -24,7 +24,7 @@ These metrics quantify data issues as a score between 0 and 1, where 1 indicates
 Version 1.0 of the Federated Data Ops API is concerned with accessing data quality for a single edge site. Future iterations planned for version 2 of the library are to enable federated edge data quality assessment, such as schema reconciliation methods like column mapping and label standardization.
 ​
 ​
-## Version 1.0 APIs
+## Version 1.0 API
 The following are API services offered for version 1.0:
 ​
 Methods for data/label management:
