@@ -8,7 +8,8 @@ Model Fusion API extends IBM FL framework to solve this edge scenario by only sh
 
 ## Version 1.0 API
 The following are API services offered for version 1.0:
-​
+
+
 Methods for model fusion:
 1. Start Aggregator: Aggregator is responsible for orchestration the federated learning environment 
 
