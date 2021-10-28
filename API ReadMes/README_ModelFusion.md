@@ -40,6 +40,30 @@ learning_rate: The learnig rate for the parties to use for training
 
 optimizer: The name of the optimizer used for training (not applicable for doc2vec). Should be the name used by the keras or pytorch libraries (ex: optim.Adam for pytorch)
 ```
+#### Return:
+```
+200: Returns success message.
+500: Returns error message logged by the server.
+```
+### 2. Start Party
+#### Description:
+With the aggregator config file defined, we can start the aggregator from the edgeai_model_fusion service. If successful, the service will return an ID for the parties to use to register with the aggregator.
+#### Arguments:
+```
+aggregator_id: ID of aggregator to connect to for federation
+data: Serialized local training dataset isolated from other party
+data_handler_class_name: Class name of the datahandler utility
+custom_data_handler: Custom datahandler module for non-supported datasets
+```
+#### Return:
+```
+200: Returns success message.
+500: Returns error message logged by the server.
+```
+
+
+
+
 ​
 
 Learn more about Model Fusion in this medium.com [blog](https://sw-ibm.medium.com/?p=df2cff3ac20d).
