@@ -27,7 +27,7 @@ Coreset API has implemented the following algorithms.
 
 
 ## Version 1.0 APIs
-The following are API services offered for version 1.0:
+The following are API services are offered in version 1.0:
 
 Methods for Coreset API.
 
