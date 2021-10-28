@@ -60,7 +60,44 @@ custom_data_handler: Custom datahandler module for non-supported datasets
 200: Returns success message.
 500: Returns error message logged by the server.
 ```
-
+### 3. Train
+#### Description:
+Starts the global training process. After both Parties register successfully with the aggregator, the federated learning process can begin. We will issue a train command to the model_fusion service to initiate the training.
+The aggregator_id parameter is required to initiate the correct aggregator.
+Upon successful training, the service should return the model weights of the global model acquired through fusion process.
+#### Arguments:
+```
+None
+```
+#### Return:
+```
+200: Returns success message.
+500: Returns error message logged by the server.
+```
+### 4. Stop
+#### Description:
+Stops the aggregator and all registered party nodes with corresponding ID.
+#### Arguments:
+```
+None
+```
+#### Return:
+```
+200: Returns success message.
+500: Returns error message logged by the server.
+```
+### 5. Get Weights 
+#### Description:
+Returns model weights from Fusion process.
+#### Arguments:
+```
+None
+```
+#### Return:
+```
+200: Returns success message.
+500: Returns error message logged by the server.
+```
 
 
 
