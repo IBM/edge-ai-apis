@@ -46,7 +46,8 @@ data_file: csv file to assess data quality/train NLP model
 200: Returns success message
 500: Returns error message logged by server
 ```
-. 
+
+
 ### 2.	Data Imputation
 #### Description:  
 Performs a column level remediation to impute null values
@@ -62,11 +63,33 @@ dictionary: dictionary of data/column map derived from training data
 200: Returns success message
 500: Returns error message logged by server
 ```
--
-- Data Validation: Determines if data input is out of vocabulary (i.e. not present in the data set)
-- 
-- Data Noise: Identifies data inputted in the incorrect column
-​
+### 3.	Data Validation
+#### Description:  
+Determines if data input is out of vocabulary (i.e. not present in the data set)
+#### Arguments: 
+```
+data_file: csv file to assess data quality/train NLP model
+model: keyed vectors of fasttext model
+```	
+#### Return: 
+```
+200: Returns success message
+500: Returns error message logged by server
+```
+### 4.	Data noise
+#### Description:  
+Determines if data input is out of vocabulary (i.e. not present in the data set)
+#### Arguments: 
+```
+data_file: csv file to assess data quality/train NLP model
+model: keyed vectors of fasttext model
+```	
+#### Return: 
+```
+200: Returns success message
+500: Returns error message logged by server
+```
+
 ​
 ## Interpreting the Output
  
