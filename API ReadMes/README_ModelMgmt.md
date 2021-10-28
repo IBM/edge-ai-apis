@@ -23,6 +23,60 @@ Methods for Model Management API.
 2. Outlier Detection: Determines if the test data is an outlier to the model based on its fingerprint.
 3. Get Result: Retrieves result from completed "Generate Fingerprint" operation.
 
+## Interpreting the Output
+
+### 1. Generate Fingerprint
+#### Descripion:
+Generates fingerprint for model or dataset.
+#### Arguments:
+```
+dataset: Pickled file of numpy array dataset used during model training.
+model: Saved model that will be used to fingerprint.
+model_type: Type of model to fingerprint - 'Keras or Pytorch'.
+model_def: Model definition of Pytorch module if model_type is 'pytorch'
+partial_activations: percentage of partial activations to retain when fingerprinting
+
+```
+### Return:
+```
+200: Returns success message
+500: Returns error message logged by server
+```
+
+### 2. Outlier Detection 
+#### Descripion:
+Determines if test data is an outlier to the model based on its fingerprint.
+#### Arguments:
+```
+fingerprint:
+num_layers: number of layers in the model fingerprint
+dataset:
+model: model used to generate fingerprint; none if only dataset if fingerprinted
+model_type: type of saved model; 'keras or pytorch'
+model_def: model definition of pytorch module if model_type is 'pytorch'
+activation_mapping: acknowledges whether activation mapping was used for fingerprint
+percentile: the percentile for outlier scoring
+
+
+```
+### Return:
+```
+200: Returns success message
+500: Returns error message logged by server
+```
+### 3. Get Result 
+#### Descripion:
+Retrieves result from completed generate fingerprint task
+#### Arguments:
+```
+none
+```
+### Return:
+```
+200: Returns success message
+500: Returns error message logged by server
+```
+
 
 
     
