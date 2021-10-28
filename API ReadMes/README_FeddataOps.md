@@ -11,11 +11,7 @@ Data Quality for AI performs the following:
 a)	Quantifies data quality
 b)	Remediates data with explanation 
 ​
-Federated DataOps extend DQAI with the following enhanced capabilities:
-1)	Model and Data Utility creation
-2)	Data Validation
-3)	Data Imputation
-4)	Data Noise 
+Federated DataOps extend DQAI with the following enhanced capabilities described in the next section focused on solving Edge data issues.
 
 ​
 Federated DataOps API extends the data assessment and remediation functions found in the Data Quality for AI with data and label remediation for tabular data sets with text data. Each function provides a quality score and a an explanation towards remediation
@@ -29,13 +25,46 @@ The following are API services are offered in version 1.0.
 ​
 
 Methods for data/label management:
-- Model and Data Utility creation: Creates the following data utilities for the data management APIs 
+1. Generate NLP Model: models and creates data utilities
+2. Data Imputation: remediates to impute null column values
+3. Data Validation: determines if data input is out of vocabulary 
+4. Data Noise: identifies data inputted in the incorrect column
+
+### 1.	Generate NLP Model
+#### Description:  
+Model and Data Utility creation: Creates the following data utilities for the data management APIs 
     1. Fasttext model (fasttext file) - used to validate and impute data during assementment
     2. Cooccurrence matrix (pickle file) - used to impute data based on statistics of the test set
     3. data/column mapping (pickle file) - used to validate data is correctly remediated in the appropriate column
 Creates a fastext model to learn the relationship between column values in the data set to validate or impute data.
+#### Arguments: 
+```
+data_file: csv file to assess data quality/train NLP model
+```	
+#### Return: 
+```
+200: Returns success message
+500: Returns error message logged by server
+```
+. 
+### 2.	Data Imputation
+#### Description:  
+Performs a column level remediation to impute null values
+#### Arguments: 
+```
+data_file: csv file to assess data quality/train NLP model
+model: keyed vectors of fasttext model
+matrix: pickled file of co-occurance matrix derived training data set
+dictionary: dictionary of data/column map derived from training data
+```	
+#### Return: 
+```
+200: Returns success message
+500: Returns error message logged by server
+```
+-
 - Data Validation: Determines if data input is out of vocabulary (i.e. not present in the data set)
-- Data Imputation: Offers remediation to impute null column values
+- 
 - Data Noise: Identifies data inputted in the incorrect column
 ​
 ​
