@@ -10,15 +10,15 @@ Model Fusion API extends IBM FL framework to solve this edge scenario by only sh
 The following are API services offered for version 1.0:
 ​
 Methods for model fusion:
-**1. Start Aggregator**: Aggregator is responsible for orchestration the federated learning environment 
-​
-**2. Start Party**: Registering a party with the aggregator before joining the federation
-​
-**3. Train**: Initiate the training
-​
-**4. Stop**: Ends the federated learning framework to signify end of training
-​
-**5. Get Weights**: For edge sites to retrieve the weights training is complete
+1. Start Aggregator: Aggregator is responsible for orchestration the federated learning environment 
+
+2. Start Party: Registering a party with the aggregator before joining the federation
+
+3. Train: Initiate the training
+
+4. Stop: Ends the federated learning framework to signify end of training
+
+5. Get Weights: For edge sites to retrieve the weights training is complete
 ​
 ## Interpreting the Output
 
