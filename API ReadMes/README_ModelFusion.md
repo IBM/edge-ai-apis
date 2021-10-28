@@ -18,6 +18,15 @@ Methods for model fusion:
 
 ​
 ## Interpreting the Output
+The follow are a list of parameters to set the `Start Aggregator` config:
+fusion_algorithm: The name of the fusion algorithm for the federation learning process. Options includes 'fedavg', 'iter_avg', and 'doc2vec'
+model_type: The type of model used for fusion. Options includes 'keras', 'pytorch', and 'doc2vec'
+model_file: The saved initial model to distribute to parties to train in isolation
+num_parties : The number of nodes participating in the fusion
+rounds : The number of fusion rounds to complete
+epochs : The number of epochs to to train for each fusion round
+learning_rate : The learnig rate for the parties to use for training
+optimizer : The name of the optimizer used for training (not applicable for doc2vec). Should be the name used by the keras or pytorch libraries (ex: optim.Adam for pytorch)
 
 Learn more about Model Fusion in this medium.com [blog](https://sw-ibm.medium.com/?p=df2cff3ac20d).
 
