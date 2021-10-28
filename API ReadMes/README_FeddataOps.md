@@ -25,8 +25,9 @@ Version 1.0 of the Federated Data Ops API is concerned with accessing data quali
 ​
 ​
 ## Version 1.0 API
-The following are API services offered for version 1.0:
+The following are API services are offered in version 1.0.
 ​
+
 Methods for data/label management:
 - Model and Data Utility creation: Creates the following data utilities for the data management APIs 
     1. Fasttext model (fasttext file) - used to validate and impute data during assementment
