@@ -1,11 +1,11 @@
 
-# Getting Started with Edge AI Coreset API 
+# Getting Started with Distributed AI Coreset API 
 Smart compression and data extraction with Coreset API.
 
 ## Overview
-In edge computing, there are many applications where data collected from edge locations needs to be transmitted to a central location for processing (e.g., model training, federated inferencing), so that knowledge obtained at the edges can be combined to produce a global view. As the amount of data collected at the edges can be huge, data compression is needed to efficiently deliver different types of data over networks due to transmission cost and latency without losing data fidelity.
+In Distributed computing, there are many applications where data collected from distributed locations needs to be transmitted to a central location for processing (e.g., model training, federated inferencing), so that knowledge obtained at the distributed environments can be combined to produce a global view. As the amount of data collected at the distributed environments can be huge, data compression is needed to efficiently deliver different types of data over networks due to transmission cost and latency without losing data fidelity.
 
-Coreset API is designed for this purpose and implements a set of compression algorithms with the primary focus on the creation of AI models when collecting training data from edge locations. 
+Coreset API is designed for this purpose and implements a set of compression algorithms with the primary focus on the creation of AI models when collecting training data from distributed locations. 
 
 Coreset API has implemented the following algorithms.
 
@@ -31,11 +31,15 @@ The following are API services are offered in version 1.0:
 
 Methods for Coreset API.
 
-REST APIs are using an HTTP post method to invoke the backend Coreset service. The payload of the post method has a multipart/form-data format in which form is used to pass arguments and file is used to pass data. 
+REST API uses an HTTP post method to invoke the backend Coreset service. The payload of the post method has a multipart/form-data format in which form is used to pass arguments and file is used to pass data. 
 
-In the following, a sample is given for each method in python syntax. 
+In the following, a example is given for each method in python syntax. 
 
-All the calls have a format of res = requests.post(url='http://URL/method', data=meta_data, files=file_data) where meta_data defines the arguments passed to the algorithm and file_data specifies the dataset used for processing. The return of each call carries a status code and the processing result in a pickled format. 
+API calls have a format of 
+```
+res = requests.post(url='http://URL/method', data=meta_data, files=file_data) 
+```
+where meta_data defines the arguments passed to the algorithm and file_data specifies the dataset used for processing. The return of each call carries a status code and the processing result in a pickled format. 
 
 The status code 200 indicates success, and the status code 400 denotes an error condition.
 
