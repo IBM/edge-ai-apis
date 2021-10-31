@@ -237,7 +237,7 @@ res = requests.post(url='URL', data=meta_data, files=file_data)
 
 
 
-### Decompress
+### Decompress Methods
 
 ### 11.	jpeg_decompress
 #### Description:
