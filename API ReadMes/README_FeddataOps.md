@@ -1,9 +1,9 @@
-## Getting Started with Edge AI Federated DataOps API
+## Getting Started with Distributed AI Federated DataOps API
 ​
 Smart data remediation and curation with Federated DataOps API.
 
 ## Overview
-Data generated at the edge of network by people and machines create many challenges.  Data at various geographic locations may have different quality and provenance.  In order to gain insights from this massive amount of data, data scientists and data engineers spend enormous amount of time to cleanse, understand and curate, self-managing without requiring manual intervention and prepares the data ready for AI pipeline. 
+Data generated at distributed network by people and machines create many challenges.  Data at various geographic locations may have different quality and provenance.  In order to gain insights from this massive amount of data, data scientists and data engineers spend enormous amount of time to cleanse, understand and curate, self-managing without requiring manual intervention and prepares the data ready for AI pipeline. 
 ​
 Data Quality for AI (DQAI) API and Federated DataOps API solves this problem.
 ​
@@ -11,13 +11,13 @@ Data Quality for AI performs the following:
 a)	Quantifies data quality
 b)	Remediates data with explanation 
 ​
-Federated DataOps extend DQAI with the following enhanced capabilities described in the next section focused on solving Edge data issues.
+Federated DataOps extend DQAI with the following enhanced capabilities described in the next section focused on solving distributed data issues.
 
 ​
 Federated DataOps API extends the data assessment and remediation functions found in the Data Quality for AI with data and label remediation for tabular data sets with text data. Each function provides a quality score and a an explanation towards remediation
 These metrics quantify data issues as a score between 0 and 1, where 1 indicates no issues were detected. Currently, these metrics are for text tabular datasets and accepts the input in the form of a comma.    
 ​
-Version 1.0 of the Federated Data Ops API is concerned with accessing data quality for a single edge site. Future iterations planned for version 2 of the library are to enable federated edge data quality assessment, such as schema reconciliation methods like column mapping and label standardization.
+Version 1.0 of the Federated Data Ops API is concerned with accessing data quality for a single distributed site. Future iterations planned for version 2 of the library are to enable federated distributed data quality assessment, such as schema reconciliation methods like column mapping and label standardization.
 ​
 ​
 ## Version 1.0 API
