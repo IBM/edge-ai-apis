@@ -89,8 +89,8 @@ txid: Transaction ID used to look up status of a model, or get a pruned/quantize
   
 ### Distributed AI Model Compression RESTFul API Tutorial
 
-This tutorial is intended to teach the audience to test the Edge SDK
-Model Adaptation component. We provide APIs to perform model compression via
+This tutorial is intended to teach the audience to test the Distributed AI 
+Model Compression component. We provide APIs to perform model compression via
 structured channel pruning for both TensorFlow and PyTorch models. Structured pruning performs
 a one-shot pruning and returns the model with a user defined sparcity. Re-training will be performed by the user.  For quick reference, developers can read [Pruning Filters for Efficient ConvNets](https://arxiv.org/abs/1608.08710).
 
