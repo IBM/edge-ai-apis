@@ -10,15 +10,15 @@ The following are API services offered for version 1.0.
 
 Methods for model compression:
 
-1. Model pruning: Model size reduction prunes least important weights while keeping the most important neurons.
+1. Model pruning: Model size reduction prunes least important weights while keeping the most important neurons. This version supports Pytorch and Tensor Flow.
 
-2. Model quantization: Models are usually represented as multi-dimensional arrays of 32-bit and 64-bit floats.
+2. Model quantization: Models are usually represented as multi-dimensional arrays of 32-bit and 64-bit floats. This method will be support in future releases.
   
-  •	Reduce granularity to 16-bit floats, or 8-bit integers; Go as far as 4-bit and even 1-bit.
+     •	Reduce granularity to 16-bit floats, or 8-bit integers; Go as far as 4-bit and even 1-bit.
   
-  •	Candidates for quantization – Weights; Biases (though not recommended); Activations/Outputs.
+     •	Candidates for quantization – Weights; Biases (though not recommended); Activations/Outputs.
   
-  •	Tradeoff between Accuracy, Storage, Space, Memory.
+     •	Tradeoff between Accuracy, Storage, Space, Memory.
 
 ## Interpreting the Output
 ### 1. Model pruning 
