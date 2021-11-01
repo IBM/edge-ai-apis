@@ -47,7 +47,7 @@ The status code 200 indicates success, and the status code 400 denotes an error 
 
 ### 1.	jpeg_compress
 #### Description:
-Compress an image to JPEG image
+Compress an image to JPEG image.
 #### Arguments:
 ```
 quality: An integer specifying the quality of the compressed JPEG image ranging from 0 to 100.
