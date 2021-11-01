@@ -1,9 +1,9 @@
-# Getting Started with Edge AI Model Compression API
+# Getting Started with Distributed AI Model Compression API
 
 
 
 ## Overview
-In edge computing, there are many applications where edge devices are typically resource constrained e.g. power, memory, storage, compute or network.  As deep learning and machine learning models become more complex with time, inferencing at the edge of network requires model fine tuning. There are two methods in fine tuning models. 
+In Distributed computing, there are many applications where distributed devices are typically resource constrained e.g. power, memory, storage, compute or network.  As deep learning and machine learning models become more complex with time, inferencing at distrbiuted network requires model fine tuning. There are two methods in fine tuning models. 
 
 ## Version 1.0 API
 The following are API services offered for version 1.0.
