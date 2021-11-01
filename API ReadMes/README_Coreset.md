@@ -22,8 +22,8 @@ Coreset API has implemented the following algorithms.
     b.	`Clustering-based` approach which characterizes data with centroids and sample distributions
 
     c.	`Autoencoder` which is an artificial neural network that learns the distribution inherent in the data and recreates statistically similar data at the core location
-    d.	`MFCC extraction` from sound data which can be used for audio analysis.
-
+    
+    d.	`MFCC (Mel Frequency Cepstral Coefficient) extraction` from sound data which can be used for audio analysis.
 
 
 ## Version 1.0 APIs
