@@ -3,26 +3,26 @@
 Smart compression and data extraction with Coreset API.
 
 ## Overview
-In Distributed computing, there are many applications where data collected from distributed locations needs to be transmitted to a central location for processing (e.g., model training, federated inferencing), so that knowledge obtained at the distributed environments can be combined to produce a global view. As the amount of data collected at the distributed environments can be huge, data compression is needed to efficiently deliver different types of data over networks due to transmission cost and latency without losing data fidelity.
+In `Distributed computing`, there are many applications where data collected from distributed locations needs to be transmitted to a central location for processing (e.g., model training, federated inferencing), so that knowledge obtained at the distributed environments can be combined to produce a global view. As the amount of data collected at the distributed environments can be huge, data compression is needed to efficiently deliver different types of data over networks due to transmission cost and latency without losing data fidelity.
 
-Coreset API is designed for this purpose and implements a set of compression algorithms with the primary focus on the creation of AI models when collecting training data from distributed locations. 
+`Coreset API` is designed for this purpose and implements a set of compression algorithms with the primary focus on the creation of AI models when collecting training data from distributed locations. 
 
 Coreset API has implemented the following algorithms.
 
-1.	Lossless compression which removes redundant information from dataset to achieve compression. It has no change in model fidelity, but data reduction is not significant.
+1.	`Lossless compression` which removes redundant information from dataset to achieve compression. It has no change in model fidelity, but data reduction is not significant.
 
-2.	Feature extraction which uses domain specific feature extractors to significantly reduce the amount of data. It has high compression but no change in model fidelity.
+2.	`Feature extraction` which uses domain specific feature extractors to significantly reduce the amount of data. It has high compression but no change in model fidelity.
 
-3.	Lossy compression which extracts features from frequency/temporal domain and then encode them. Typical examples are standard compression algorithms such as MP3, JPEG and MP4.
+3.	`Lossy compression` which extracts features from frequency/temporal domain and then encode them. Typical examples are standard compression algorithms such as MP3, JPEG and MP4.
 
-4.	Advanced algorithms
+4.	`Advanced algorithms`
 
-    a.	Principle component analysis which computes the principal components and use them to perform a change of basis on the data
+    a.	`Principle component analysis` which computes the principal components and use them to perform a change of basis on the data
 
-    b.	Clustering-based approach which characterizes data with centroids and sample distributions
+    b.	`Clustering-based` approach which characterizes data with centroids and sample distributions
 
-    c.	Autoencoder which is an artificial neural network that learns the distribution inherent in the data and recreates statistically similar data at the core location
-    d.	MFCC extraction from sound data which can be used for audio analysis.
+    c.	`Autoencoder` which is an artificial neural network that learns the distribution inherent in the data and recreates statistically similar data at the core location
+    d.	`MFCC extraction` from sound data which can be used for audio analysis.
 
 
 
