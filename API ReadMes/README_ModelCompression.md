@@ -87,7 +87,7 @@ txid: Transaction ID used to look up status of a model, or get a pruned/quantize
   
   
   
-### Edge AI Model Adaptation RESTFul API Tutorial
+### Distributed AI Model Compression RESTFul API Tutorial
 
 This tutorial is intended to teach the audience to test the Edge SDK
 Model Adaptation component. We provide APIs to perform model compression via
