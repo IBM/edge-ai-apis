@@ -37,38 +37,3 @@ This article provided an overview of Distributed AI, a computing paradigm that b
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-3	Getting started with Distributed AI APIs Page 
-The Distributed AI APIs is an early access offering from IBM Research to enable AI at distributed environments. It packages Distributed AI APIs to support AI applications across hybrid cloud and distributed environments. These APIs are general purpose and support many modalities of data, for example, visual, acoustic, sensors, network logs, time series, or natural language. Using these APIs, you can create various AI-based applications. The following image shows the Distributed AI high-level architecture.
-
-
-
- 
-Figure 2: Distributed AI High Level Architecture
-
-Starting at the bottom in the figure, it’s assumed that at a minimum the edge sites have a Linux®-based server with a container runtime like Docker. There could be additional software such as Red Hat OpenShift or IBM Cloud Pak for Data, but it is not mandatory. Also, it’s useful to automate the deployment and management of these containers with IBM Edge Application Manager or Red Hat OpenShift Advanced Cluster Management capabilities.
-Above that are Coresets and Federated Data Ops, the distributed data layer capabilities. Coresets are a set of algorithms to intelligently sub-sample raw data or compute compressed semantic representations of raw data to optimize data collection from the edge. Federated Data Ops can automatically assess data quality, identify issues such as missing or noisy data, and substitute or discard such data.
-
-On top of the data layer are the AI capabilities. The Model Management addresses all of the second pattern questions discussed previously about selecting the most suitable model for an edge site, optimizing the model for the edge site, and monitoring its performance. The Model Fusion is focused on enabling federated learning and federated inferencing in the context of the third pattern where all of the training data cannot be aggregated in one place.
-Finally, at the top are Edge AI applications created by using the APIs to solve specific business problems. A few examples have been created to illustrate how the Edge AI SDK APIs work and how you can use them to create applications.
-
-Because some companies have little or no instrumentation in their operations, it can hinder any opportunities for automation. In a recent partnership with Boston Dynamics, IBM demonstrated how Edge AI can help.
-
-Deploying sensors to instrument legacy equipment can be cost prohibitive. However, the SPOT robot from Boston Dynamics is a roaming edge server and a sensor platform. SPOT can walk around and look or listen for anomalies by incorporating visual and acoustic inspection on board, and can interact with equipment where needed. The Edge AI SDK APIs running on the SPOT robot can unlock tremendous opportunities for asset health insights and more timely action.
-
-<Boston Dynamic SPOT Robot demo Video> 
-
-
