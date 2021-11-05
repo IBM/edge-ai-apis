@@ -11,7 +11,7 @@ IBM clients have been on a journey to digitize their operations and drive qualit
 
 Even after addressing these data challenges, you can find that scaling AI capabilities across a variety of operational environment and automation tasks is a difficult problem to solve. One example of this is visual inspections to identify safety issues or manufacturing defects in products. Typically, clients have many manufacturing sites with hundreds of cameras inspecting various stages of the process. Constantly piping all of that video data to the cloud for analytics increases costs. Also, much of this data is potentially sensitive, and clients are not confident about allowing it to leave their premises.
 
-![alt text](https://github.ibm.com/wendych/IBM-Research-NGS/blob/master/Images/EdgeComputing.png)
+![alt text](https://github.com/IBM/edge-ai-apis/blob/master/Images/EdgeComputing.png)
 
 Another example is an Industry 4.0 environment that is heavily instrumented with a variety of sensors and IoT devices, generating a vast amount of data very quickly, and how to keep up with that data. Finally, there are many sites with limited or no instrumentation, and the cost of upgrading them is prohibitive.
 Moving data around is a common challenge across many industries due to various reasons including cloud costs, sensitivity, regulation, latency, and connectivity to the cloud. As the world becomes increasingly data-driven, these challenges become critical to address.
@@ -23,7 +23,7 @@ Now, let’s look at some common use case patterns we have come across.
 
 Starting at the top of the Distributed AI usage patterns, as shown in the following figure, companies want to collect the data from their opeations and analyze it in the cloud with abundant compute resources as compared to the distributed environments. AI models can be trained and deployed in the cloud for inference.
 
-![alt text](https://github.ibm.com/wendych/IBM-Research-NGS/blob/master/Images/EdgeAI_Usage_Patterns.png)
+![alt text](https://github.com/IBM/edge-ai-apis/blob/master/Images/EdgeAI_Usage_Patterns.png)
  Figure 1: Distributed AI Usage Patterns
 
 In this case, IBM research focuses on technologies for enabling efficient collection of data. However, not all data is valuable. Therefore, how do we decide what data to collect? Depending on what question the data is helping to answer, we might be able to sub-sample the data or preprocess it to extract features instead of transmitting the raw data.
