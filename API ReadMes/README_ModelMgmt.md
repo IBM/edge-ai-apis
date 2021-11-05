@@ -76,5 +76,502 @@ none
 ```
 
 
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Model Fusion\n",
+    "\n",
+    "Model Fusion is a framework for federated learning in edge environments. Federated Learning (FL) is a distributed machine learning process in which each participant node (or party) retains its data locally and interacts with the other participants via a learning protocol. The main driver behind FL is need to not share data with others, mainly driven by privacy and confidentially concerns."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Import libraries for calling APIs and data serialization"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import requests\n",
+    "import pickle\n",
+    "import json\n",
+    "import os"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Model Fusion Requirements\n",
+    "\n",
+    "FL requires that all parties utilize the same model architecture for model fusion. For this example, we will define a Pytorch CNN for all parties to utilize. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import torch\n",
+    "from torch import nn\n",
+    "\n",
+    "model = nn.Sequential(nn.Conv2d(1, 32, 3, 1),\n",
+    "                      nn.ReLU(),\n",
+    "                      nn.Conv2d(32, 64, 3, 1),\n",
+    "                      nn.ReLU(),\n",
+    "                      nn.MaxPool2d(2, 2),\n",
+    "                      nn.Dropout2d(p=0.25),\n",
+    "                      nn.Flatten(),\n",
+    "                      nn.Linear(9216, 128),\n",
+    "                      nn.ReLU(),\n",
+    "                      nn.Dropout2d(p=0.5),\n",
+    "                      nn.Linear(128, 10),\n",
+    "                      nn.LogSoftmax(dim=1))\n",
+    "\n",
+    "fname = 'torch_mnist_cnn.pt'\n",
+    "torch.save(model, fname)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Prepare Parameters for Aggregator \n",
+    "\n",
+    "The Aggregator is in charge of running the Fusion Algorithm. A fusion algorithm queries the registered parties to carry out the federated learning process. The queries sent vary according to the model/algorithm type.  In return, parties send their reply as a model update object, and these model updates are then aggregated according to the specified Fusion Algorithm, specified via a Fusion Handler class. \n",
+    "\n",
+    "## Config components\n",
+    "The follow are a list of parameters to set the Aggregator config:  \n",
+    "        \n",
+    "- **fusion_algorithm**: The name of the fusion algorithm for the federation learning process. Options includes 'fedavg', 'iter_avg', and 'doc2vec' \n",
+    "  \n",
+    "  \n",
+    "- **model_type**: The type of model used for fusion. Options includes 'keras', 'pytorch', and 'doc2vec'\n",
+    " \n",
+    " \n",
+    "- **model_file**: The saved initial model to distribute to parties to train in isolation\n",
+    "  \n",
+    "  \n",
+    "- **num_parties** : The number of nodes participating in the fusion\n",
+    "\n",
+    "\n",
+    "- **rounds** : The number of fusion rounds to complete\n",
+    "\n",
+    "\n",
+    "- **epochs** : The number of epochs to to train for each fusion round\n",
+    "\n",
+    "\n",
+    "- **learning_rate** : The learnig rate for the parties to use for training\n",
+    "\n",
+    "\n",
+    "- **optimizer** : The name of the optimizer used for training (not applicable for doc2vec). Should be the name used by the keras or pytorch libraries (ex: optim.Adam for pytorch) "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fusion = 'fedavg'\n",
+    "model_type = 'pytorch'\n",
+    "model_file = 'torch_mnist_cnn.pt'\n",
+    "num_parties = 2\n",
+    "rounds = 3\n",
+    "epochs = 3\n",
+    "lr = 1\n",
+    "optimizer = 'optim.Adadelta'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Start the aggregator \n",
+    "\n",
+    "With the aggregator config file defined, we can start the aggregator from the edgeai_model_fusion service. \n",
+    "If successful, the service will return an ID for the parties to use to register with the aggregator."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "url = 'https://9.59.199.87:1443/start_aggregator'\n",
+    "\n",
+    "payload = {'fusion_algorithm': fusion, 'model_type': model_type, 'num_parties': num_parties, 'rounds': rounds, 'learning_rate': lr, 'epochs': epochs, 'optimizer': optimizer}\n",
+    "\n",
+    "files = {'model_file': open(model_file, 'rb'), }\n",
+    "\n",
+    "\n",
+    "r = requests.post(url,  data=payload, files=files, verify=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "r.text"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "agg_id = r.json()['aggregator_id']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Prepare local data for each party \n",
+    "\n",
+    "Since each party retains its own dataset to train a model in insolation, we will obtain a subset of the MNIST dataset for each party and split uniformly"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def print_statistics(i, x_test_pi, x_train_pi, nb_labels, y_train_pi):\n",
+    "    print('Party_', i)\n",
+    "    print('nb_x_train: ', np.shape(x_train_pi),\n",
+    "          'nb_x_test: ', np.shape(x_test_pi))\n",
+    "    for l in range(nb_labels):\n",
+    "        print('* Label ', l, ' samples: ', (y_train_pi == l).sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from keras import utils\n",
+    "from keras.datasets import mnist\n",
+    "\n",
+    "img_rows, img_cols = 28, 28\n",
+    "nb_dp_per_party = [500,500]\n",
+    "\n",
+    "(x_train, y_train), (x_test, y_test) = mnist.load_data()\n",
+    "x_train = x_train.astype('float32').reshape(x_train.shape[0], 1, img_rows, img_cols) / 255.\n",
+    "y_train = y_train.astype('int64')\n",
+    "x_test = x_test.astype('float32').reshape(x_test.shape[0], 1, img_rows, img_cols) / 255.\n",
+    "y_test = y_test.astype('int64')\n",
+    "\n",
+    "labels, train_counts = np.unique(y_train, return_counts=True)\n",
+    "te_labels, test_counts = np.unique(y_test, return_counts=True)\n",
+    "    \n",
+    "if np.all(np.isin(labels, te_labels)):\n",
+    "    print(\"Warning: test set and train set contain different labels\")\n",
+    "\n",
+    "num_train = np.shape(y_train)[0]\n",
+    "num_test = np.shape(y_test)[0]\n",
+    "num_labels = np.shape(np.unique(y_test))[0]\n",
+    "nb_parties = len(nb_dp_per_party)\n",
+    "\n",
+    "\n",
+    "train_probs = {label: 1.0 / len(labels) for label in labels}\n",
+    "test_probs = {label: 1.0 / len(te_labels) for label in te_labels}\n",
+    "\n",
+    "for idx, dp in enumerate(nb_dp_per_party):\n",
+    "    train_p = np.array([train_probs[y_train[idx]] for idx in range(num_train)])\n",
+    "    train_p /= np.sum(train_p)\n",
+    "    train_indices = np.random.choice(num_train, dp, p=train_p)\n",
+    "    test_p = np.array([test_probs[y_test[idx]] for idx in range(num_test)])\n",
+    "    test_p /= np.sum(test_p)\n",
+    "\n",
+    "    # Split test evenly\n",
+    "    test_indices = np.random.choice(num_test, int(num_test / nb_parties), p=test_p)\n",
+    "    x_train_pi = x_train[train_indices]\n",
+    "    y_train_pi = y_train[train_indices]\n",
+    "    x_test_pi = x_test[test_indices]\n",
+    "    y_test_pi = y_test[test_indices]\n",
+    "    \n",
+    "    # Now put it all in an npz\n",
+    "    name_file = 'data_party' + str(idx) + '.npz'\n",
+    "    print(name_file)\n",
+    "    np.savez(name_file, x_train=x_train_pi, y_train=y_train_pi,\n",
+    "             x_test=x_test_pi, y_test=y_test_pi)\n",
+    " \n",
+    "    print_statistics(idx, x_test_pi, x_train_pi, num_labels, y_train_pi)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Start Party Nodes\n",
+    "\n",
+    "We will start each party to join the federation. The following are parameters required to register with an aggregator. \n",
+    "\n",
+    "- **aggregator_id** : The ID of the aggregator to connect to for fusion \n",
+    "\n",
+    "\n",
+    "- **data** : The path to the data file to train with \n",
+    "\n",
+    "\n",
+    "- **data_handler_class_name** : The name of the data handler to train with. Model fusion requires a data_handler to preprocess data. The apis includes handlers for popular datasets such as 'cifar10_keras' and 'mnist_keras' for keras model types; 'mnist_pytorch' for pytorch model types; and '20_newsgroup' and 'wikipedia' for doc2vec. If a custom datahandler is provided, the name of the class should be listed. \n",
+    "\n",
+    "\n",
+    "- **custom_data_handler** (optional): The path to the user created data handler python module for training. For information on how to create a customer data handler, see [here.](https://w3.ibm.com/w3publisher/ffl/ffl-tutorials/prepare-your-data) \n",
+    "\n",
+    "If successful, the service will notify how many remaining parties are left to register with the service."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data_handler = 'mnist_pytorch'\n",
+    "\n",
+    "url = 'https://9.59.199.87:1443/start_party'\n",
+    "\n",
+    "payload = {'aggregator_id': agg_id, 'data_handler_class_name': data_handler}\n",
+    "\n",
+    "files = {'data': open('data_party0.npz', 'rb'), }\n",
+    "                      \n",
+    "r = requests.post(url,  data=payload, files=files, verify=False)  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "r.text"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "url = 'https://9.59.199.87:1443/start_party'\n",
+    "\n",
+    "payload = {'aggregator_id': agg_id, 'data_handler_class_name': 'mnist_pytorch'}\n",
+    "\n",
+    "files = {'data': open('data_party1.npz', 'rb'), }\n",
+    "                      \n",
+    "r = requests.post(url,  data=payload, files=files, verify=False)  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "r.text"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Initiate Federated Training (Model Fusion)\n",
+    "\n",
+    "After both Parties register successfully with the aggregator, the federated learning process can begin. We will issue a **train** command to the model_fusion service to initiate the training. \n",
+    "\n",
+    "The aggregator_id parameter is required to initiate the correct aggregator\n",
+    "\n",
+    "Upon successful training, the service should return the model weights of the global model acquired through fusion"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "url = 'https://9.59.199.87:1443/train'\n",
+    "\n",
+    "payload = {'aggregator_id': agg_id}\n",
+    "                      \n",
+    "r = requests.post(url,  json=payload, verify=False) "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "r"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Get global model (parameters) from model training process that allow parties to reconstruct the global model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "global_model_weights = 'pt_model_weights.pickle'\n",
+    "with open(global_model_weights, 'wb') as fd:\n",
+    "        for chunk in r.iter_content(chunk_size=128):\n",
+    "            fd.write(chunk)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with open(global_model_weights, 'rb') as file: \n",
+    "    weights = pickle.load(file)\n",
+    "\n",
+    "len(weights)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# End Federation \n",
+    "\n",
+    "To end the federation, a **stop** command should be issued to the aggregator with the corresponding ID. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "url = 'https://9.59.199.87:1443/stop'\n",
+    "\n",
+    "payload = {'aggregator_id': agg_id}\n",
+    "                      \n",
+    "r = requests.post(url,  json=payload, verify=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "r.text"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Evaluate Global Model \n",
+    "\n",
+    "Now that we've retrieved the weights from the global model, we can update our local model with the new weights and evaluate using a test corpus. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from skorch import NeuralNet\n",
+    "net = NeuralNet(\n",
+    "    model,\n",
+    "    max_epochs=10,\n",
+    "    optimizer=torch.optim.Adam,\n",
+    "    criterion=torch.nn.NLLLoss,\n",
+    "    batch_size=64,  \n",
+    ")\n",
+    "net.initialize()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for p1, p2 in zip(list(net.module_.parameters()),weights):\n",
+    "    p1.data = torch.from_numpy(p2)\n",
+    "    p1.data.requires_grad = True"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pred = net.predict(x_test)\n",
+    "pred_exp = np.exp(pred)\n",
+    "pred_argmax = np.argmax(pred_exp, axis=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.metrics import accuracy_score\n",
+    "accuracy_score(y_test, pred_argmax)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "edge_ai_model_mgmt",
+   "language": "python",
+   "name": "edge_ai_model_mgmt"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
 
     
