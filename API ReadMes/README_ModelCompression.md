@@ -82,13 +82,13 @@ txid: Transaction ID used to look up status of a model, or get a pruned/quantize
   
   
 ### Distributed AI Model Compression RESTFul API Tutorial
-
-This tutorial is intended to teach the audience to test the Distributed AI 
-Model Compression component. We provide APIs to perform model compression via
+This tutorial is intended to teach the audience to test the Edge SDK
+Model Adaptation component. We provide APIs to perform model compression via
 structured channel pruning for both TensorFlow and PyTorch models. Structured pruning performs
-a one-shot pruning and returns the model with a user defined sparcity. Re-training will be performed by the user.  For quick reference, developers can read [Pruning Filters for Efficient ConvNets](https://arxiv.org/abs/1608.08710).
+a one-shot pruning and returns the model with a user defined sparcity. Re-training will be performed by the 
+user.  For quick reference, developers can read [Pruning Filters for Efficient ConvNets](https://arxiv.org/abs/1608.08710).
 
-### Requirements
+## Requirements
 
 First, please install Python 3.8+, and the basic requirements:
 
@@ -223,7 +223,7 @@ for train_ix, test_ix in kfold.split(train_ds_X):
 
     print('> %.3f' % (acc * 100.0))
 
-    latest_trainX = trainXß
+    latest_trainX = trainX
     latest_trainY = trainY
     latest_testX = testX
     latest_testY = testY
@@ -273,35 +273,62 @@ Given the model `mnist_base.h5`, we want to prune it, re-train it, and evaluate 
 There are two ways to access the APIs, either command line through the
 `curl` command, or through the web interface.
 
+### Assumptions
+
+In order to test out APIs we must first get our API keys. For your reference please see: [Place holder](https://get.your.keys)
+
 ### curl Interface
 
 #### TensorFlow Pruning
 
-The TensorFlow endpoint will look as follows: `https://<IP>:443/api/tf_prune`.
+The TensorFlow endpoint will look as follows:
+
+```bash
+curl --request POST \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/tf_prune?percent=REPLACE_THIS_VALUE&ommitted=REPLACE_THIS_VALUE' \
+  --header 'X-Fields: REPLACE_THIS_VALUE' \
+  --header 'X-IBM-Client-Id: REPLACE_THIS_KEY' \
+  --header 'X-IBM-Client-Secret: REPLACE_THIS_KEY' \
+  --header 'accept: application/json' \
+  --header 'content-type: multipart/form-data; boundary=---011000010111000001101001' \
+  --form model=REPLACE_THIS_VALUE
+```
+
+Please note that there are a few values that must be replaced: 
+`REPLACE_THIS_VALUE` and `REPLACE_THIS_KEY` for example.
 
 First, users need to navigate to the directory where they saved the `mnist_base.h5` 
-file.
+file. Or the model the user wishes to prune. 
 
 Users can then invoke the pruning API as follows:
 
 ```bash
-    curl -X POST "https://edge-api.sl.cloud9.ibm.com:443/api/tf_prune?percent=0.4" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "model=@mnist_base.h5;type=" 
+curl --request POST \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/tf_prune?percent=0.4&ommitted=' \
+  --header 'X-IBM-Client-Id: CLIENT_ID' \
+  --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
+  --header 'accept: application/json' \
+  --header 'content-type: multipart/form-data; boundary=---011000010111000001101001' \
+  --form model=@mnist_base.h5
 ```
 
 The API's parameters are:
 
-
-* `file` - This can be either a `.zip` file containing the zipped 
+* `model` - This can be either a `.zip` file containing the zipped 
 directory saved via the `save()` interface or an `.h5` file. 
 
 * `percent` - This is the desired sparcity. For example, 0.4 means target 40% less channels. So in theory, the size of the model will be 60% of the original size.
 
-* `ommitted` - This is the list of layers we want to omit from pruning. Some output layers should fall under this category.
+* `ommitted` - This is the list of layers we want to omit from pruning. Some output layers should fall under this category. In this example, ther are no layers, else, we
+would include them separated by commas as follows: `'fc1,fc2'`.
+
+* `CLIENT_ID` - The client ID obtained when registering to access the APIs.
+* `CLIENT_SECRET` - The client ID secret obtained when registering to access the APIs.
 
 Sample output is:
 
 ```bash
-    {"txid":"c5727f10-fa19-11eb-9294-acde48001122", "message":"Successfully submitted transaction."}
+    {"txid":"cf06e766-2d20-11ec-931e-0242ac170002", "message":"Successfully submitted transaction."}
 ```
 
 Save the `txid` as it is needed to query the API for the operation status. 
@@ -314,17 +341,33 @@ If the upload fails, the `txid` field will be `None` or `N/A`, and the
 
 The status of each transaction/request can be obtained via the status API. When
 the request for pruning is executed, we obtain a transaction id (`txid`) as a result. We can use
-that `txid` to check the status of the call itself. For example:
-
+that `txid` to check the status of the call itself. The template for the call is:
 
 ```bash
-     curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/status/?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+curl --request GET \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/status/?txid=REPLACE_THIS_VALUE' \
+  --header 'X-Fields: REPLACE_THIS_VALUE' \
+  --header 'X-IBM-Client-Id: REPLACE_THIS_KEY' \
+  --header 'X-IBM-Client-Secret: REPLACE_THIS_KEY' \
+  --header 'accept: application/json'
 ```
+
+In our example, the `txid` was `cf06e766-2d20-11ec-931e-0242ac170002`, so we will invoke
+the API as follows: 
+
+```bash
+curl --request GET \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/status/?txid=cf06e766-2d20-11ec-931e-0242ac170002' \
+  --header 'X-IBM-Client-Id: CLIENT_ID' \
+  --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
+  --header 'accept: application/json'
+```
+
 
 The API will return the status:
 
 ```bash
-    {"filename":"tmpsq9t0mmh.pt","status":0,"message":"Successfully submitted transaction."}
+{"status": "0", "message": "Saved model to /tmp/tmp7d8tkpfs.h5", "filename": "tmp7d8tkpfs.h5"}
 ```
 
 If the model is either queued or failed, the return will be different. It will have the `status`
@@ -336,11 +379,16 @@ field as well as a `message` field. No `filename` would be returned in that case
 In order to download a pruned model. Users can use the `download` API as follows:
 
 ```bash
-    curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/download?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+curl --request GET \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/download?txid=c5727f10-fa19-11eb-9294-acde48001122' \
+  --header 'X-IBM-Client-Id: CLIENT_ID' \
+  --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
+  --header 'accept: application/json' \
+  --output 'tmp7d8tkpfs.h5'
 
-    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                    Dload  Upload   Total   Spent    Left  Speed
-    100 2846k  100 2846k    0     0   198M      0 --:--:-- --:--:-- --:--:--  198M
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                Dload  Upload   Total   Spent    Left  Speed
+100 2846k  100 2846k    0     0   198M      0 --:--:-- --:--:-- --:--:--  198M
 ```
 
 Where the requirement is the `txid`. 
@@ -378,11 +426,10 @@ sparcity percentage, and optionally pass the layers to be ommited:
 
 This will create a response:
 
-![TensorFlow Pruning Response](images/tfpruneres.png)
+![TensorFlow Pruning Response](images/txid.png)
 
-Please save the transaction ID (txid) value from the response field:
-
-![TensorFlow Pruning Response TXID](images/txid.png)
+Please save the transaction ID (txid) value from the response field as 
+we will use it to check the status.
 
 #### Pruning Status
 
@@ -438,7 +485,8 @@ for train_ix, test_ix in kfold.split(train_ds_X):
     # evaluate model
 
     _, acc = pruned_model.evaluate(testX, testY, verbose=0)
-
+    latest_testX = testX
+    
     print('> %.3f' % (acc * 100.0))
 
 t2 = 0.0
@@ -448,7 +496,7 @@ for i in range(0, len(latest_testX)):
     img = (np.expand_dims(img,0))
 
     t1 = current_milli_time()
-    prediction = model.predict(img)
+    prediction = pruned_model.predict(img)
     t2 += current_milli_time() - t1
 
 t2 /= float(len(latest_testX))
@@ -598,7 +646,7 @@ the model. This is because of the limitations in Pickle.
 
 In order to invoke the restful API, we need to specify the following fields:
 
-* `file` - This is the state dictionary. For example:
+* `weights` - This is the state dictionary. For example:
 ```python
     torch.save(model.state_dict(), "mnist_cnn.pth")
 ```
@@ -648,19 +696,36 @@ python file. The only libraries that we support are the base torch library. See 
 
 * `percent` - This is the desired sparcity. For example, 0.4 means target 40% less channels. So in theory, the size of the model will be 60% of the original size.
 
-* `unprunable` - This is the list of layers we want to omit from pruning. Most output layers should fall under this category.
+* `ommitted` - This is the list of layers we want to omit from pruning. Most output layers should fall under this category. For example, let's say we want to omit `fc1` and 
+`fc2` above, especially `fc2` as it is our main output layer.
 
-* `input_size` - This is the input size of the model input. Can be obtained by getting an inference instance and looking at the `shape` of the tensor or numpy array.
+* `input_size` - This is the input size of the model input. Can be obtained by getting an inference instance and looking at the `shape` of the tensor or numpy array. For example, a single 28x28 image would be 1,28,28.
 
-* `model_type` - We define two types, `pt` and `tf`. Use them with their respective fields as pruning enforces them all and the process will fail.
 
 The API can be invoked as follows:
 
 ```bash
-    curl -X POST "https://edge-api.sl.cloud9.ibm.com:443/api/pt_prune?percent=0.4&ommitted=fc1%2Cfc2&input_size=1%2C28%2C28&model_name=Net" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "weights=@mnist_cnn.pth;type=" -F "dataset=@train_loader.pth;type=" -F "class_def=@model.py;type=text/x-python-script"
+
+curl --request POST \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/pt_prune?percent=0.5&ommitted=fc1,fc2&input_size=1,28,28&model_name=Net' \
+  --header 'X-IBM-Client-Id: CLIENT_ID' \
+  --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
+  --header 'accept: application/json' \
+  --header 'content-type: multipart/form-data; boundary=---011000010111000001101001' \
+  --form weights=@mnist_cnn.pth \
+  --form dataset=@train_loader.pth \
+  --form class_def=@model.py
+
 ```
 
+Please note that in the above example, all files are in the same directory. However, 
+users can specify the path to their file manually.
 
+The response from this call will be:
+
+```bash
+{"txid": "bbab7210-2d1e-11ec-917d-0242ac170002", "message": "Successfully submitted transaction."}
+```
 
 ### Process Status
 
@@ -670,28 +735,38 @@ that `txid` to check the status of the call itself. For example:
 
 
 ```bash
-     curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/status/?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+curl --request GET \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/status/?txid=bbab7210-2d1e-11ec-917d-0242ac170002' \
+  --header 'X-IBM-Client-Id: CLIENT_ID' \
+  --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
+  --header 'accept: application/json'
 ```
 
 The API will return the status:
 
 ```bash
-    {"filename":"tmpsq9t0mmh.pt","status":0}
+{"status": "0", "message": "b'----------------------------------------------------------------\\n        Layer (type)               Output Shape         Param #\\n================================================================\\n            Conv2d-1           [-1, 16, 26, 26]             160\\n            Conv2d-2           [-1, 32, 24, 24]           4,640\\n           Dropout-3           [-1, 32, 12, 12]               0\\n            Linear-4                  [-1, 128]         589,952\\n           Dropout-5                  [-1, 128]               0\\n            Linear-6                   [-1, 10]           1,290\\n================================================================\\nTotal params: 596,042\\nTrainable params: 596,042\\nNon-trainable params: 0\\n----------------------------------------------------------------\\nInput size (MB): 0.00\\nForward/backward pass size (MB): 0.26\\nParams size (MB): 2.27\\nEstimated Total Size (MB): 2.54\\n----------------------------------------------------------------\\n'", "filename": "tmpqpj73q22.pt"}
 ```
 
 If the model is either queued or failed, the return will be different. It will have the `status`
-field as well as a `message` field. No `filename` would be returned in that case.
+field as well as a `message` field. No `filename` would be returned in that case. In
+this example, the message consists of the model summary.
 
 ### Downloading a Pruned Model
 
 In order to download a pruned model. Users can use the `download` API as follows:
 
 ```bash
-    curl -k -X GET "https://edge-api.sl.cloud9.ibm.com:443/api/download?txid=5c4df5b8-fc85-11eb-9648-c858c0f177a9" -H "accept: application/json"
+curl --request GET \
+  --url 'https://dev.api.ibm.com/edgeai/test/api/download?txid=bbab7210-2d1e-11ec-917d-0242ac170002' \
+  --header 'X-IBM-Client-Id: CLIENT_ID' \
+  --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
+  --header 'accept: application/json' \
+  --output 'tmpqpj73q22.pt'
 
-    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                    Dload  Upload   Total   Spent    Left  Speed
-    100 2846k  100 2846k    0     0   198M      0 --:--:-- --:--:-- --:--:--  198M
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                Dload  Upload   Total   Spent    Left  Speed
+100 2846k  100 2846k    0     0   198M      0 --:--:-- --:--:-- --:--:--  198M
 ```
 
 Where the requirement is the `txid`. The desired filename is passed via the `--output`
@@ -732,8 +807,7 @@ Once the model is downloaded, we can load it as follows:
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    model = Net().to(device)
-    model.load_state_dict(torch.load('tmpbev7r2ej.pt', map_location=torch.device(device)))
+    model, _  = torch.load('tmpqpj73q22.pt', map_location=torch.device(device))
     model.eval()
 
 ```
@@ -749,4 +823,6 @@ Now, developers can re-train the model using their standard training loop. For e
         scheduler.step()
     torch.save(model.state_dict(), "pruned_trained_cnn.pt")
 ```
+
+
 
