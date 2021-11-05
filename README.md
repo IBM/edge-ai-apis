@@ -17,5 +17,5 @@ LINK
 #### This GIT Hub repository is dedicated to provide `Getting Started` instructions on using the Distributed AI APIs and interpreting the results including sample code and Jupyter Notebooks.
 
 
-IBM Research, Edge AI Team.
+IBM Research, Distributed AI Team.
 Email: EdgeAI.User@ibm.com
