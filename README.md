@@ -4,7 +4,7 @@ Distributed AI is a computing paradigm that bypasses the need to move vast amoun
 
 The Distributed AI APIs are early access offering from IBM Research to enable AI at the edge and distrbuted environments. These APIs are general purpose and support many modalities of data, for example, visual, acoustic, sensors, network logs, time series, or natural language. Using these APIs, you can create various AI-based applications. The following image shows the Distributed AI high-level architecture.
 
-![alt text](https://github.ibm.com/wendych/IBM-Research-NGS/blob/master/Images/EdgeAI_HighLevel_Arch_v1.png)
+![alt text](https://github.com/IBM/edge-ai-apis/blob/master/Images/EdgeAI_HighLevel_Arch_v1.png)
 
 
 ## Get Trial Subscription and getting API keys to get access
