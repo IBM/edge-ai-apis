@@ -31,9 +31,7 @@ Generates fingerprint for model or dataset.
 #### Arguments:
 ```
 dataset: Pickled file of numpy array dataset used during model training.
-model: Saved model that will be used to fingerprint.
-model_type: Type of model to fingerprint - 'Keras or Pytorch'.
-model_def: Model definition of Pytorch module if model_type is 'pytorch'
+model: aved keras model that will be used to fingerprint.  Pytorch model will be supported in future releases.
 partial_activations: percentage of partial activations to retain when fingerprinting
 
 ```
