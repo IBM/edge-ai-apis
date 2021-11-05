@@ -39,7 +39,7 @@ partial_activations: percentage of partial activations to retain when fingerprin
 ```
 ### Return:
 ```
-200: Returns success message
+202: Returns task id to check status of fingerprint generation process
 500: Returns error message logged by server
 ```
 
@@ -61,7 +61,7 @@ percentile: the percentile for outlier scoring
 ```
 ### Return:
 ```
-200: Returns success message
+200: Returns percentage of test data samples deemed outliers
 500: Returns error message logged by server
 ```
 ### 3. Get Result 
