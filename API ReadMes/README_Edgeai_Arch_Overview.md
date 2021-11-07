@@ -6,8 +6,9 @@ As adoption of 5G telecommunication technology by enterprises and consumers beco
 
 Distributed computing solves many of these challenges by bringing computation, storage, network, communication, power, and application functions closer to data sources at the point of action. Additionally, it enables businesses to tighten data security with capabilities to control and comply with privacy regulations.
 IBM clients have been on a journey to digitize their operations and drive quality and operational efficiencies. AI and Digitization is helping them streamline and automate their operations and, in some cases, enable new businesses. They have a lot of operational data across their locations, but tapping into this data to drive the next level of automation is a huge challenge. AI can be a game changer in addressing this, but there are a few major problems: <br>
-    1.	Too much data that needs to be collected, which overburdens networks and generates latency issues.
-    2.	Too little data available to drive meaningful insights because the assets are not connected and monitored.
+
+    1.	Too much data that needs to be collected, which overburdens networks and generates latency issues.<br>
+    2.	Too little data available to drive meaningful insights because the assets are not connected and monitored.<br>
 
 Even after addressing these data challenges, you can find that scaling AI capabilities across a variety of operational environment and automation tasks is a difficult problem to solve. One example of this is visual inspections to identify safety issues or manufacturing defects in products. Typically, clients have many manufacturing sites with hundreds of cameras inspecting various stages of the process. Constantly piping all of that video data to the cloud for analytics increases costs. Also, much of this data is potentially sensitive, and clients are not confident about allowing it to leave their premises.
 
@@ -23,7 +24,7 @@ Now, let’s look at some common use case patterns we have come across.
 
 Starting at the top of the Distributed AI usage patterns, as shown in the following figure, companies want to collect the data from their opeations and analyze it in the cloud with abundant compute resources as compared to the distributed environments. AI models can be trained and deployed in the cloud for inference.
 
-![alt text](https://github.com/IBM/edge-ai-apis/blob/master/Images/EdgeAI_Usage_Patterns.png)
+![alt text](https://github.com/IBM/edge-ai-apis/blob/master/Images/EdgeAI_Usage_Patterns.png)<br>
  Figure 1: Distributed AI Usage Patterns
 
 In this case, IBM research focuses on technologies for enabling efficient collection of data. However, not all data is valuable. Therefore, how do we decide what data to collect? Depending on what question the data is helping to answer, we might be able to sub-sample the data or preprocess it to extract features instead of transmitting the raw data.
