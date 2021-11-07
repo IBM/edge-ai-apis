@@ -6,8 +6,8 @@ As adoption of 5G telecommunication technology by enterprises and consumers beco
 
 Distributed computing solves many of these challenges by bringing computation, storage, network, communication, power, and application functions closer to data sources at the point of action. Additionally, it enables businesses to tighten data security with capabilities to control and comply with privacy regulations.
 IBM clients have been on a journey to digitize their operations and drive quality and operational efficiencies. AI and Digitization is helping them streamline and automate their operations and, in some cases, enable new businesses. They have a lot of operational data across their locations, but tapping into this data to drive the next level of automation is a huge challenge. AI can be a game changer in addressing this, but there are a few major problems: 
-    1.	Too much data that needs to be collected, which overburdens networks and generates latency issues
-    2.	Too little data available to drive meaningful insights because the assets are not connected and monitored
+    1.	Too much data that needs to be collected, which overburdens networks and generates latency issues.
+    2.	Too little data available to drive meaningful insights because the assets are not connected and monitored.
 
 Even after addressing these data challenges, you can find that scaling AI capabilities across a variety of operational environment and automation tasks is a difficult problem to solve. One example of this is visual inspections to identify safety issues or manufacturing defects in products. Typically, clients have many manufacturing sites with hundreds of cameras inspecting various stages of the process. Constantly piping all of that video data to the cloud for analytics increases costs. Also, much of this data is potentially sensitive, and clients are not confident about allowing it to leave their premises.
 
