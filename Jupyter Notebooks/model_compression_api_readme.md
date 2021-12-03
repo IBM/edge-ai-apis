@@ -23,7 +23,7 @@ The TensorFlow endpoint will look as follows:
 
 ```bash
 curl --request POST \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/tf_prune?percent=REPLACE_THIS_VALUE&ommitted=REPLACE_THIS_VALUE' \
+  --url 'https://api.ibm.com/edgeai/run/api/tf_prune?percent=REPLACE_THIS_VALUE&ommitted=REPLACE_THIS_VALUE' \
   --header 'X-Fields: REPLACE_THIS_VALUE' \
   --header 'X-IBM-Client-Id: REPLACE_THIS_KEY' \
   --header 'X-IBM-Client-Secret: REPLACE_THIS_KEY' \
@@ -42,7 +42,7 @@ Users can then invoke the pruning API as follows:
 
 ```bash
 curl --request POST \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/tf_prune?percent=0.4&ommitted=' \
+  --url 'https://api.ibm.com/edgeai/run/api/tf_prune?percent=0.4&ommitted=' \
   --header 'X-IBM-Client-Id: CLIENT_ID' \
   --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
   --header 'accept: application/json' \
@@ -83,7 +83,7 @@ that `txid` to check the status of the call itself. The template for the call is
 
 ```bash
 curl --request GET \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/status/?txid=REPLACE_THIS_VALUE' \
+  --url 'https://api.ibm.com/edgeai/run/api/status/?txid=REPLACE_THIS_VALUE' \
   --header 'X-Fields: REPLACE_THIS_VALUE' \
   --header 'X-IBM-Client-Id: REPLACE_THIS_KEY' \
   --header 'X-IBM-Client-Secret: REPLACE_THIS_KEY' \
@@ -95,7 +95,7 @@ the API as follows:
 
 ```bash
 curl --request GET \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/status/?txid=cf06e766-2d20-11ec-931e-0242ac170002' \
+  --url 'https://api.ibm.com/edgeai/run/api/status/?txid=cf06e766-2d20-11ec-931e-0242ac170002' \
   --header 'X-IBM-Client-Id: CLIENT_ID' \
   --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
   --header 'accept: application/json'
@@ -118,7 +118,7 @@ In order to download a pruned model. Users can use the `download` API as follows
 
 ```bash
 curl --request GET \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/download?txid=c5727f10-fa19-11eb-9294-acde48001122' \
+  --url 'https://api.ibm.com/edgeai/run/api/download?txid=c5727f10-fa19-11eb-9294-acde48001122' \
   --header 'X-IBM-Client-Id: CLIENT_ID' \
   --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
   --header 'accept: application/json' \
@@ -439,7 +439,7 @@ The API can be invoked as follows:
 ```bash
 
 curl --request POST \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/pt_prune?percent=0.5&ommitted=fc1,fc2&input_size=1,28,28&model_name=Net' \
+  --url 'https://api.ibm.com/edgeai/run/api/pt_prune?percent=0.5&ommitted=fc1,fc2&input_size=1,28,28&model_name=Net' \
   --header 'X-IBM-Client-Id: CLIENT_ID' \
   --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
   --header 'accept: application/json' \
@@ -468,7 +468,7 @@ that `txid` to check the status of the call itself. For example:
 
 ```bash
 curl --request GET \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/status/?txid=bbab7210-2d1e-11ec-917d-0242ac170002' \
+  --url 'https://api.ibm.com/edgeai/run/api/status/?txid=bbab7210-2d1e-11ec-917d-0242ac170002' \
   --header 'X-IBM-Client-Id: CLIENT_ID' \
   --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
   --header 'accept: application/json'
@@ -490,7 +490,7 @@ In order to download a pruned model. Users can use the `download` API as follows
 
 ```bash
 curl --request GET \
-  --url 'https://dev.api.ibm.com/edgeai/test/api/download?txid=bbab7210-2d1e-11ec-917d-0242ac170002' \
+  --url 'https://api.ibm.com/edgeai/run/api/download?txid=bbab7210-2d1e-11ec-917d-0242ac170002' \
   --header 'X-IBM-Client-Id: CLIENT_ID' \
   --header 'X-IBM-Client-Secret: CLIENT_SECRET' \
   --header 'accept: application/json' \
